@@ -5,8 +5,7 @@
 ## make
 ##
 
-SRC	=	../src/robot_factory.c
-SRC	+=	test.c
+SRC	=	../src/corewar.c
 
 OBJ	=	$(SRC:.c=.o)
 
