@@ -7,6 +7,7 @@
 
 SRC	=	src/main.c
 SRC	+=	src/corewar.c
+SRC	+=	src/op.c
 
 OBJ	=	$(SRC:.c=.o)
 
