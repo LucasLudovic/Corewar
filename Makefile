@@ -8,6 +8,7 @@
 SRC	=	src/main.c
 SRC	+=	src/corewar.c
 SRC	+=	src/op.c
+SRC	+=	src/virtualmachine/initialize_vm.c
 
 OBJ	=	$(SRC:.c=.o)
 
@@ -26,7 +27,7 @@ all:	$(NAME)
 $(NAME):	$(OBJ)
 	@make -C lib/my
 	@make clean -C lib/my
-	@$(CC) -o $(NAME) $(OBJ) $(CFLAGS) $(LDFLAGS) $(CPPFLAGS)
+	$(CC) -o $(NAME) $(OBJ) $(CFLAGS) $(LDFLAGS) $(CPPFLAGS)
 
 clean:
 	@rm -f $(OBJ)
