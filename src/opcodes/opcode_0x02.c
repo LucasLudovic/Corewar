@@ -16,8 +16,8 @@
 int execute_opcode_ld(cpu_t *cpu, champions_t *champion)
 {
     int coding_byte = 0;
-    uint32_t first_parameter = 0;
-    uint8_t second_parameter = 0;
+    uint32_t first_param = 0;
+    uint8_t second_param = 0;
 
     if (cpu == NULL || champion == NULL)
         return display_error("Unable to retrieve structs for ld\n");
@@ -28,11 +28,11 @@ int execute_opcode_ld(cpu_t *cpu, champions_t *champion)
     if ((coding_byte >> 6 & T_DIR || coding_byte >> 6 & T_IND) == FALSE)
         return display_error("Wrong type for the first parameter\n");
     if (coding_byte >> 6 & T_DIR) {
-        if (fread(&first_parameter, sizeof(uint32_t), 1, champion->file_stream) <= 0)
+        if (fread(&first_param, sizeof(int), 1, champion->file_stream) <= 0)
             return display_error("Unable to get the first param for ld\n");
-        cpu->registers[second_parameter] = first_parameter;
+        champion->registers[second_param] = first_param;
     }
     if (coding_byte >> 6 & T_IND)
-        cpu->registers[second_parameter] = cpu->memory[first_parameter];
+        champion->registers[second_param] = cpu->memory[first_param];
     return SUCCESS;
 }
