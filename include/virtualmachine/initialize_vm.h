@@ -10,6 +10,7 @@
 
     #include <stdint.h>
     #include "../op.h"
+    #include "../champions/champions.h"
 
 typedef enum state {
     CPU_IDLE,
@@ -21,6 +22,7 @@ typedef struct CPU {
     uint8_t registers[REG_SIZE];
     uint64_t program_counter;
     uint8_t memory[MEM_SIZE];
+    champions_t *champions;
     CPU_state_t state;
 } CPU_t;
 
