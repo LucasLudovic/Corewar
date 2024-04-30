@@ -8,6 +8,6 @@
 #ifndef COREWAR_H_
     #define COREWAR_H_
 
-int execute_corewar(void);
+int execute_corewar(char const *const *argv);
 
 #endif

@@ -23,9 +23,9 @@ int display_help(void)
 
 int main(const int argc, char const *const *const argv)
 {
-    if (argc != 2 || argv == NULL || argv[1] == NULL)
+    if (argc <= 2 || argv == NULL || argv[1] == NULL)
         return display_error("Arguments not valid !\n");
     if (my_strcmp(argv[1], "-h") == 0)
         return display_help();
-    return execute_corewar();
+    return execute_corewar(argv);
 }

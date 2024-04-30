@@ -19,11 +19,11 @@ typedef enum state {
 } cpu_state_t;
 
 typedef struct cpu_s {
-    uint8_t registers[REG_SIZE];
-    uint64_t program_counter;
     uint8_t memory[MEM_SIZE];
     champions_t *champions;
     cpu_state_t state;
 } cpu_t;
+
+int initialize_vm(cpu_t *cpu, char const *const *argv);
 
 #endif
