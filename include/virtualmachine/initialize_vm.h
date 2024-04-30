@@ -16,14 +16,14 @@ typedef enum state {
     CPU_IDLE,
     CPU_RUNNING,
     CPU_HALTED
-} CPU_state_t;
+} cpu_state_t;
 
-typedef struct CPU {
+typedef struct cpu_s {
     uint8_t registers[REG_SIZE];
     uint64_t program_counter;
     uint8_t memory[MEM_SIZE];
     champions_t *champions;
-    CPU_state_t state;
-} CPU_t;
+    cpu_state_t state;
+} cpu_t;
 
 #endif
