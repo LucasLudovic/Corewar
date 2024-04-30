@@ -15,6 +15,7 @@
 int execute_opcode_live(cpu_t *cpu, champions_t *champion)
 {
     size_t player_number = 0;
+    int type = 0;
 
     if (cpu == NULL || champion == NULL)
         return display_error("Unable to retrieve structs in opcode live\n");
@@ -22,6 +23,10 @@ int execute_opcode_live(cpu_t *cpu, champions_t *champion)
         return display_error("Unable to retrieve champion name for live\n");
     if (champion->file_stream == NULL)
         return display_error("Unable to access the champion file stream\n");
+    if (fread(&type, sizeof(char), 1, champion->file_stream) <= 0)
+        return display_error("You arrived to the end of the file for live\n");
+    if (type != T_DIR)
+        return display_error("Wrong type to execute live\n");
     if (fread(&player_number, sizeof(int), 1, champion->file_stream) <= 0)
         return display_error("You arrived to the end of the file for live\n");
     if (player_number <= 0)
