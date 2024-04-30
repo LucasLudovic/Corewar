@@ -46,10 +46,23 @@ static int check_champions(cpu_t *cpu, char const *const *argv, size_t *i)
     return SUCCESS;
 }
 
+static
+int check_prog_number(cpu_t *cpu, char const *const *argv, size_t *i)
+{
+    if (argv[*i + 1] == NULL)
+        return display_error("No argument after -n\n");
+    if (my_str_isnum(argv[*i + 1]) == 0)
+        return display_error("argument after -n must be a number\n");
+    return SUCCESS;
+}
+
 static int retrieve_champion(cpu_t *cpu, char const *const *argv, size_t *i)
 {
     if (my_strcmp(argv[*i], "-a") == 0)
         if (check_load_address(cpu->champions, argv, i) == FAILURE)
+            return FAILURE;
+    if (my_strcmp(argv[*i], "-n") == 0)
+        if (check_prog_number(cpu, argv, i) == FAILURE)
             return FAILURE;
     if (check_champions(cpu, argv, i) == FAILURE)
         return FAILURE;
