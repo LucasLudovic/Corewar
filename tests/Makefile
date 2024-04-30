@@ -6,6 +6,8 @@
 ##
 
 SRC	=	../src/corewar.c
+SRC	=	../src/op.c
+SRC	=	../src/virtualmachine/initialize_vm.c
 
 OBJ	=	$(SRC:.c=.o)
 
