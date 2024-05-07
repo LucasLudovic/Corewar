@@ -17,8 +17,26 @@ int retrieve_champions_header(cpu_t *cpu)
 }
 
 static
+int execute_instruction(champions_t *champion)
+{
+    return SUCCESS;
+}
+
+static
+int retrieve_next_instruction(champions_t *champion)
+{
+    return SUCCESS;
+}
+
+static
 int execute_single_champion(cpu_t *cpu, champions_t *champion)
 {
+    if (champion->nbr_cycles == cpu->nb_cycle) {
+        if (execute_instruction(champion) == FAILURE)
+            return FAILURE;
+        if (retrieve_next_instruction(champion) == FAILURE)
+            return FAILURE;
+    }
     return SUCCESS;
 }
 
@@ -41,6 +59,7 @@ int execute_virtual_machine(cpu_t *cpu)
     while (cpu->state != CPU_HALTED) {
         if (execute_champions(cpu) == FAILURE)
             return FAILURE;
+        cpu->nb_cycle += 1;
     }
     return SUCCESS;
 }
