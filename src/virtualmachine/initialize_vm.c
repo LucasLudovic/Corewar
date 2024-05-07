@@ -25,7 +25,8 @@ int check_load_address(champions_t *champion, char const *const *argv,
     return SUCCESS;
 }
 
-static int check_champions(champions_t *champion, char const *const *argv, size_t *i, size_t *champion_number)
+static int check_champions(champions_t *champion, char const *const *argv,
+    size_t *i, size_t *champion_number)
 {
     size_t len = my_strlen(argv[*i]);
 
@@ -54,25 +55,25 @@ int check_prog_number(cpu_t *cpu, char const *const *argv, size_t *i)
     return SUCCESS;
 }
 
-static int retrieve_champion(cpu_t *cpu, char const *const *argv, size_t *i, size_t *champion_number)
+static int retrieve_champion(cpu_t *cpu, char const *const *argv,
+    size_t *i, size_t *champion_number)
 {
     if (my_strcmp(argv[*i], "-a") == 0)
-        if (check_load_address(cpu->champions[*champion_number], argv, i) == FAILURE)
+        if (check_load_address(cpu->champions[*champion_number], argv, i) ==
+            FAILURE)
             return FAILURE;
     if (my_strcmp(argv[*i], "-n") == 0)
         if (check_prog_number(cpu, argv, i) == FAILURE)
             return FAILURE;
-    if (check_champions(cpu->champions[*champion_number], argv, i, champion_number) == FAILURE)
+    if (check_champions(cpu->champions[*champion_number], argv, i,
+        champion_number) == FAILURE)
         return FAILURE;
     return SUCCESS;
 }
 
-int initialize_vm(cpu_t *cpu, char const *const *argv)
+static
+void initialize_champions(cpu_t *cpu)
 {
-    size_t champion_number = 0;
-
-    if (cpu == NULL)
-        return FAILURE;
     for (size_t i = 0; i < NB_CHAMPIONS; i += 1) {
         cpu->champions[i] = malloc(sizeof(champions_t));
         cpu->champions[i]->name = NULL;
@@ -84,6 +85,15 @@ int initialize_vm(cpu_t *cpu, char const *const *argv)
         cpu->champions[i]->load_address = 0;
         cpu->champions[i]->program_counter = 0;
     }
+}
+
+int initialize_vm(cpu_t *cpu, char const *const *argv)
+{
+    size_t champion_number = 0;
+
+    if (cpu == NULL)
+        return FAILURE;
+    initialize_champions(cpu);
     if (argv == NULL)
         return FAILURE;
     for (size_t i = 1; argv[i] != NULL; i += 1) {
