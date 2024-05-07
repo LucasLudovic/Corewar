@@ -23,6 +23,7 @@ typedef struct cpu_s {
     uint8_t memory[MEM_SIZE];
     champions_t *champions[NB_CHAMPIONS];
     cpu_state_t state;
+    size_t nb_cycle;
 } cpu_t;
 
 int initialize_vm(cpu_t *cpu, char const *const *argv);

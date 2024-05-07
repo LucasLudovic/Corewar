@@ -47,7 +47,8 @@ static int check_champions(champions_t *champion, char const *const *argv,
 }
 
 static
-int check_prog_number(champions_t *champions, char const *const *argv, size_t *i)
+int check_prog_number(champions_t *champions, char const *const *argv,
+    size_t *i)
 {
     if (argv[*i + 1] == NULL)
         return display_error("No argument after -n\n");
@@ -79,7 +80,8 @@ static int retrieve_champion(cpu_t *cpu, char const *const *argv,
             FAILURE)
             return FAILURE;
     if (my_strcmp(argv[*i], "-n") == 0)
-        if (check_prog_number(cpu->champions[*champion_number], argv, i) == FAILURE)
+        if (check_prog_number(cpu->champions[*champion_number], argv, i) ==
+            FAILURE)
             return FAILURE;
     if (my_strcmp(argv[*i], "-dump") == 0)
         if (check_dump(cpu->champions[*champion_number], argv, i) == FAILURE)
