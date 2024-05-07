@@ -14,7 +14,7 @@ OBJ	=	$(SRC:.c=.o)
 
 NAME	=	corewar
 
-CC	=	gcc
+CC	=	gcc -g
 
 CFLAGS	=	-W -Wall -Wextra -Wpedantic
 
