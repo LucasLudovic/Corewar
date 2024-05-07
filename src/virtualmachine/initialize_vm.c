@@ -25,7 +25,8 @@ int check_load_address(champions_t *champion, char const *const *argv,
     return SUCCESS;
 }
 
-static int check_champions(cpu_t *cpu, char const *const *argv, size_t *i)
+static int check_champions(champions_t *champion, char const *const *argv,
+    size_t *i, size_t *champion_number)
 {
     size_t len = my_strlen(argv[*i]);
 
@@ -39,10 +40,8 @@ static int check_champions(cpu_t *cpu, char const *const *argv, size_t *i)
         return display_error("champion must be .cor file");
     if (argv[*i][len - 4] != '.')
         return display_error("champion must be .cor file");
-    cpu->champions->name = my_strdup(argv[*i]);
-    if (argv[*i + 1] != NULL)
-        cpu->champions->next = malloc(sizeof(champions_t));
-    cpu->champions = cpu->champions->next;
+    champion->name = my_strdup(argv[*i]);
+    *champion_number += 1;
     return SUCCESS;
 }
 
@@ -56,33 +55,50 @@ int check_prog_number(cpu_t *cpu, char const *const *argv, size_t *i)
     return SUCCESS;
 }
 
-static int retrieve_champion(cpu_t *cpu, char const *const *argv, size_t *i)
+static int retrieve_champion(cpu_t *cpu, char const *const *argv,
+    size_t *i, size_t *champion_number)
 {
     if (my_strcmp(argv[*i], "-a") == 0)
-        if (check_load_address(cpu->champions, argv, i) == FAILURE)
+        if (check_load_address(cpu->champions[*champion_number], argv, i) ==
+            FAILURE)
             return FAILURE;
     if (my_strcmp(argv[*i], "-n") == 0)
         if (check_prog_number(cpu, argv, i) == FAILURE)
             return FAILURE;
-    if (check_champions(cpu, argv, i) == FAILURE)
+    if (check_champions(cpu->champions[*champion_number], argv, i,
+        champion_number) == FAILURE)
         return FAILURE;
     return SUCCESS;
 }
 
+static
+void initialize_champions(cpu_t *cpu)
+{
+    for (size_t i = 0; i < NB_CHAMPIONS; i += 1) {
+        cpu->champions[i] = malloc(sizeof(champions_t));
+        cpu->champions[i]->name = NULL;
+        cpu->champions[i]->file_stream = NULL;
+        cpu->champions[i]->carry = 0;
+        cpu->champions[i]->borrow = 0;
+        cpu->champions[i]->nbr_cycles = 0;
+        cpu->champions[i]->play_number = 0;
+        cpu->champions[i]->load_address = 0;
+        cpu->champions[i]->program_counter = 0;
+    }
+}
+
 int initialize_vm(cpu_t *cpu, char const *const *argv)
 {
-    champions_t *head = NULL;
+    size_t champion_number = 0;
 
+    if (cpu == NULL)
+        return FAILURE;
+    initialize_champions(cpu);
     if (argv == NULL)
         return FAILURE;
-    cpu->champions = malloc(sizeof(champions_t));
-    if (cpu->champions == NULL)
-        return FAILURE;
-    head = cpu->champions;
     for (size_t i = 1; argv[i] != NULL; i += 1) {
-        if (retrieve_champion(cpu, argv, &i) == FAILURE)
+        if (retrieve_champion(cpu, argv, &i, &champion_number) == FAILURE)
             return FAILURE;
     }
-    cpu->champions = head;
     return SUCCESS;
 }
