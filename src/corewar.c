@@ -20,10 +20,8 @@ int execute_corewar(char const *const *argv)
     if (initialize_vm(cpu, argv) == FAILURE)
         return FAILURE;
     printf("PRINT CHAMPIONS\n");
-    while (cpu->champions != NULL) {
-        printf("name = %s\n", cpu->champions->name);
-        printf("load address = %d\n", cpu->champions->load_address);
-        cpu->champions = cpu->champions->next;
+    for (size_t i = 0; i < NB_CHAMPIONS; i += 1) {
+        printf("coubeh %ld\n", i);
     }
     free(cpu);
     return SUCCESS;

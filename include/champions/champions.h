@@ -9,7 +9,7 @@
     #define CHAMPIONS_H_
 
     #include <stdint.h>
-    #include "op.h"
+    #include "../op.h"
 
 typedef struct champions {
     char *name;
@@ -20,7 +20,6 @@ typedef struct champions {
     int play_number;
     int carry;
     int borrow;
-    struct champions *next;
 } champions_t;
 
 #endif

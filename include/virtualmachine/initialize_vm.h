@@ -11,6 +11,7 @@
     #include <stdint.h>
     #include "../op.h"
     #include "../champions/champions.h"
+    #include "../my_macros.h"
 
 typedef enum state {
     CPU_IDLE,
@@ -20,7 +21,7 @@ typedef enum state {
 
 typedef struct cpu_s {
     uint8_t memory[MEM_SIZE];
-    champions_t *champions;
+    champions_t champions[NB_CHAMPIONS];
     cpu_state_t state;
 } cpu_t;
 
