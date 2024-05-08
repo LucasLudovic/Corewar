@@ -28,10 +28,12 @@ int check_load_address(champions_t *champion, char const *const *argv,
 static int check_champions(champions_t *champion, char const *const *argv,
     size_t *i, size_t *champion_number)
 {
-    size_t len = my_strlen(argv[*i]);
+    ssize_t len = my_strlen(argv[*i]);
 
+    printf("len = %ld\n", len);
     if (len <= 4)
         return 1;
+    printf("len 2 = %ld\n", len);
     if (argv[*i][len - 1] != 'r')
         return display_error("champion must be .cor file");
     if (argv[*i][len - 2] != 'o')
