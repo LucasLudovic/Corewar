@@ -15,13 +15,14 @@
 typedef struct champions {
     char *name;
     FILE *file_stream;
-    size_t nbr_cycles;
     uint32_t registers[REG_NUMBER];
     uint64_t program_counter;
     int load_address;
     int play_number;
     int carry;
     int borrow;
+    size_t nbr_cycles;
+    uint8_t instructions;
 } champions_t;
 
 #endif
