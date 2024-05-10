@@ -21,17 +21,19 @@ int check_load_address(champions_t *champion, char const *const *argv,
     if (my_str_isnum(argv[*i + 1]) == 0)
         return display_error("argument after -a must be a number\n");
     champion->load_address = my_getnbr(argv[*i + 1]);
-    *i += 1;
+    *i += 2;
     return SUCCESS;
 }
 
 static int check_champions(champions_t *champion, char const *const *argv,
     size_t *i, size_t *champion_number)
 {
-    size_t len = my_strlen(argv[*i]);
+    ssize_t len = my_strlen(argv[*i]);
 
+    printf("len = %ld\n", len);
     if (len <= 4)
         return 1;
+    printf("len 2 = %ld\n", len);
     if (argv[*i][len - 1] != 'r')
         return display_error("champion must be .cor file");
     if (argv[*i][len - 2] != 'o')
@@ -41,17 +43,34 @@ static int check_champions(champions_t *champion, char const *const *argv,
     if (argv[*i][len - 4] != '.')
         return display_error("champion must be .cor file");
     champion->name = my_strdup(argv[*i]);
+    *i += 1;
     *champion_number += 1;
     return SUCCESS;
 }
 
 static
-int check_prog_number(cpu_t *cpu, char const *const *argv, size_t *i)
+int check_prog_number(champions_t *champions, char const *const *argv,
+    size_t *i)
 {
     if (argv[*i + 1] == NULL)
         return display_error("No argument after -n\n");
     if (my_str_isnum(argv[*i + 1]) == 0)
         return display_error("argument after -n must be a number\n");
+    champions->program_counter = my_getnbr(argv[*i + 1]);
+    *i += 2;
+    return SUCCESS;
+}
+
+static
+int check_dump(champions_t *champions, char const *const *argv, size_t *i)
+{
+    if (argv[*i + 1] == NULL)
+        return display_error("No argument after -dump\n");
+    if (my_str_isnum(argv[*i + 1]) == 0)
+        return display_error("argument after -dump must be a number\n");
+    champions->nbr_cycles = my_getnbr(argv[*i + 1]);
+    *i += 2;
+    printf("next = %s\n", argv[*i]);
     return SUCCESS;
 }
 
@@ -63,7 +82,11 @@ static int retrieve_champion(cpu_t *cpu, char const *const *argv,
             FAILURE)
             return FAILURE;
     if (my_strcmp(argv[*i], "-n") == 0)
-        if (check_prog_number(cpu, argv, i) == FAILURE)
+        if (check_prog_number(cpu->champions[*champion_number], argv, i) ==
+            FAILURE)
+            return FAILURE;
+    if (my_strcmp(argv[*i], "-dump") == 0)
+        if (check_dump(cpu->champions[*champion_number], argv, i) == FAILURE)
             return FAILURE;
     if (check_champions(cpu->champions[*champion_number], argv, i,
         champion_number) == FAILURE)
@@ -90,15 +113,15 @@ void initialize_champions(cpu_t *cpu)
 int initialize_vm(cpu_t *cpu, char const *const *argv)
 {
     size_t champion_number = 0;
+    size_t i = 1;
 
     if (cpu == NULL)
         return FAILURE;
     initialize_champions(cpu);
     if (argv == NULL)
         return FAILURE;
-    for (size_t i = 1; argv[i] != NULL; i += 1) {
+    while (argv[i] != NULL)
         if (retrieve_champion(cpu, argv, &i, &champion_number) == FAILURE)
             return FAILURE;
-    }
     return SUCCESS;
 }

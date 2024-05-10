@@ -39,6 +39,7 @@ int execute_corewar(char const *const *argv)
         if (cpu->champions[i]->name != NULL)
             printf("coubeh = %s\n", cpu->champions[i]->name);
         printf("load address = %d\n", cpu->champions[i]->load_address);
+        printf("prog number = %ld\n", cpu->champions[i]->program_counter);
     }
     destroy_champions(cpu);
     free(cpu);
