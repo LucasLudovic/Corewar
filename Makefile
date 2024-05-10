@@ -9,6 +9,7 @@ SRC	=	src/main.c
 SRC	+=	src/corewar.c
 SRC	+=	src/op.c
 SRC	+=	src/virtualmachine/initialize_vm.c
+SRC	+=	src/virtualmachine/champions.c
 
 OBJ	=	$(SRC:.c=.o)
 

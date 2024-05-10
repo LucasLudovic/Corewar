@@ -7,7 +7,6 @@
 
 #ifndef CHAMPIONS_H_
     #define CHAMPIONS_H_
-
     #include <stdint.h>
     #include <stdio.h>
     #include "../op.h"

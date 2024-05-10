@@ -25,15 +25,14 @@ int check_load_address(champions_t *champion, char const *const *argv,
     return SUCCESS;
 }
 
-static int check_champions(champions_t *champion, char const *const *argv,
+static
+int check_champions(champions_t *champion, char const *const *argv,
     size_t *i, size_t *champion_number)
 {
     ssize_t len = my_strlen(argv[*i]);
 
-    printf("len = %ld\n", len);
     if (len <= 4)
         return 1;
-    printf("len 2 = %ld\n", len);
     if (argv[*i][len - 1] != 'r')
         return display_error("champion must be .cor file");
     if (argv[*i][len - 2] != 'o')
@@ -43,6 +42,7 @@ static int check_champions(champions_t *champion, char const *const *argv,
     if (argv[*i][len - 4] != '.')
         return display_error("champion must be .cor file");
     champion->name = my_strdup(argv[*i]);
+    champion->file_stream = fopen(argv[*i], "rb");
     *i += 1;
     *champion_number += 1;
     return SUCCESS;
@@ -70,11 +70,11 @@ int check_dump(champions_t *champions, char const *const *argv, size_t *i)
         return display_error("argument after -dump must be a number\n");
     champions->nbr_cycles = my_getnbr(argv[*i + 1]);
     *i += 2;
-    printf("next = %s\n", argv[*i]);
     return SUCCESS;
 }
 
-static int retrieve_champion(cpu_t *cpu, char const *const *argv,
+static
+int retrieve_champion(cpu_t *cpu, char const *const *argv,
     size_t *i, size_t *champion_number)
 {
     if (my_strcmp(argv[*i], "-a") == 0)
@@ -95,10 +95,12 @@ static int retrieve_champion(cpu_t *cpu, char const *const *argv,
 }
 
 static
-void initialize_champions(cpu_t *cpu)
+int initialize_champions(cpu_t *cpu)
 {
     for (size_t i = 0; i < NB_CHAMPIONS; i += 1) {
         cpu->champions[i] = malloc(sizeof(champions_t));
+        if (cpu->champions[i] == NULL)
+            return display_error("Unable to alloc memory to champion");
         cpu->champions[i]->name = NULL;
         cpu->champions[i]->file_stream = NULL;
         cpu->champions[i]->carry = 0;
@@ -107,7 +109,9 @@ void initialize_champions(cpu_t *cpu)
         cpu->champions[i]->play_number = 0;
         cpu->champions[i]->load_address = 0;
         cpu->champions[i]->program_counter = 0;
+        cpu->nb_champions += 1;
     }
+    return SUCCESS;
 }
 
 int initialize_vm(cpu_t *cpu, char const *const *argv)
@@ -117,7 +121,8 @@ int initialize_vm(cpu_t *cpu, char const *const *argv)
 
     if (cpu == NULL)
         return FAILURE;
-    initialize_champions(cpu);
+    if (initialize_champions(cpu) == FAILURE)
+        return FAILURE;
     if (argv == NULL)
         return FAILURE;
     while (argv[i] != NULL)

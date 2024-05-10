@@ -28,5 +28,6 @@ typedef struct cpu_s {
 } cpu_t;
 
 int initialize_vm(cpu_t *cpu, char const *const *argv);
+int retrieve_champions_instructions(cpu_t *virtual_machine);
 
 #endif

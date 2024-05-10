@@ -5,11 +5,12 @@
 ** Principal function of the corewar
 */
 
+#include <stdlib.h>
+#include <stdio.h>
+#include "my.h"
 #include "corewar.h"
 #include "my_macros.h"
 #include "virtualmachine/initialize_vm.h"
-#include <stdlib.h>
-#include <stdio.h>
 
 static
 void destroy_champions(cpu_t *cpu)
@@ -28,20 +29,19 @@ void destroy_champions(cpu_t *cpu)
 
 int execute_corewar(char const *const *argv)
 {
-    cpu_t *cpu = malloc(sizeof(cpu_t));
+    cpu_t cpu = { 0 };
 
-    if (cpu == NULL)
-        return FAILURE;
-    if (initialize_vm(cpu, argv) == FAILURE)
+    if (initialize_vm(&cpu, argv) == FAILURE)
+        return display_error("Unable to initialize the cpu\n");
+    if (retrieve_champions_instructions(&cpu) == FAILURE)
         return FAILURE;
     printf("PRINT CHAMPIONS\n");
     for (size_t i = 0; i < NB_CHAMPIONS; i += 1) {
-        if (cpu->champions[i]->name != NULL)
-            printf("coubeh = %s\n", cpu->champions[i]->name);
-        printf("load address = %d\n", cpu->champions[i]->load_address);
-        printf("prog number = %ld\n", cpu->champions[i]->program_counter);
+        if (cpu.champions[i]->name != NULL)
+            printf("coubeh = %s\n", cpu.champions[i]->name);
+        printf("load address = %d\n", cpu.champions[i]->load_address);
+        printf("prog number = %ld\n", cpu.champions[i]->program_counter);
     }
-    destroy_champions(cpu);
-    free(cpu);
+    destroy_champions(&cpu);
     return SUCCESS;
 }
