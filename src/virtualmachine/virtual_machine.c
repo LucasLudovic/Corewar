@@ -27,9 +27,11 @@ static
 int retrieve_next_instruction(cpu_t *cpu, champions_t *champion)
 {
     uint8_t instructions = 0;
+
     if (fread(&instructions, sizeof(uint8_t), 1, champion->file_stream) == 0) {
         retrieve_champions_header(cpu, champion);
-        if (fread(&instructions, sizeof(uint8_t), 1, champion->file_stream) <= 0)
+        if (fread(&instructions, sizeof(uint8_t), 1, champion->file_stream)
+            <= 0)
             return display_error("Unable to retrieve next instruction\n");
     }
     return SUCCESS;

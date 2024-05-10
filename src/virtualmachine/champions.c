@@ -14,7 +14,8 @@
 #include "my.h"
 
 static
-int retrieve_champion_header(UNUSED cpu_t *vm, UNUSED const size_t champion_number)
+int retrieve_champion_header(UNUSED cpu_t *vm,
+    UNUSED const size_t champion_number)
 {
     return SUCCESS;
 }
@@ -28,8 +29,11 @@ int retrieve_champion_body(cpu_t *vm, const size_t champion_number)
 
     if (champion->file_stream == NULL)
         return display_error("Unable to access champion filestream\n");
+    memory_address = champion->load_address;
+    memory_address %= MEM_SIZE;
     while (fread(&octet, sizeof(uint8_t), 1, champion->file_stream) == 1) {
-        memory_address = (octet + (vm->nb_champions - champion_number)) % MEM_SIZE;
+        memory_address += 1;
+        memory_address %= MEM_SIZE;
         vm->memory[memory_address] = octet;
     }
     return SUCCESS;
