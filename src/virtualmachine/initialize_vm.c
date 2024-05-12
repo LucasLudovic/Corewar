@@ -100,6 +100,7 @@ int initialize_champions(cpu_t *cpu)
         cpu->champions[i]->carry = 0;
         cpu->champions[i]->borrow = 0;
         cpu->champions[i]->nbr_cycles = 0;
+        cpu->champions[i]->previous_cycle = 0;
         cpu->champions[i]->play_number = 0;
         cpu->champions[i]->pre_load = FALSE;
         cpu->champions[i]->load_address = 0;

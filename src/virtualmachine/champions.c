@@ -16,8 +16,7 @@
 #include "my.h"
 
 static
-int retrieve_champion_header(UNUSED cpu_t *vm,
-    UNUSED const size_t champion_number)
+int retrieve_champion_header(cpu_t *vm, const size_t champion_number)
 {
     header_t *buffer = NULL;
     champions_t *champions = vm->champions[champion_number];

@@ -40,6 +40,8 @@ int execute_corewar(char const *const *argv)
     }
     if (retrieve_champions_instructions(&cpu) == FAILURE)
         return FAILURE;
+    if (execute_arena(&cpu) == FAILURE)
+        return FAILURE;
     for (size_t i = 0; i < NB_CHAMPIONS && cpu.champions[i] != NULL; i += 1) {
         if (cpu.champions[i]->name != NULL)
             printf("champions n°%ld = %s\n", i, cpu.champions[i]->name);

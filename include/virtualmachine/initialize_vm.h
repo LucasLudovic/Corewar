@@ -29,5 +29,6 @@ typedef struct cpu_s {
 
 int initialize_vm(cpu_t *cpu, char const *const *argv);
 int retrieve_champions_instructions(cpu_t *virtual_machine);
+int execute_arena(cpu_t *vm);
 
 #endif
