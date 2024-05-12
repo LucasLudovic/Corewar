@@ -66,18 +66,6 @@ int check_prog_number(champions_t *champions, char const *const *argv,
 }
 
 static
-int check_dump(champions_t *champions, char const *const *argv, size_t *i)
-{
-    if (argv[*i + 1] == NULL)
-        return display_error("No argument after -dump\n");
-    if (my_str_isnum(argv[*i + 1]) == 0)
-        return display_error("argument after -dump must be a number\n");
-    champions->nbr_cycles = my_getnbr(argv[*i + 1]);
-    *i += 2;
-    return SUCCESS;
-}
-
-static
 int retrieve_champion(cpu_t *cpu, char const *const *argv,
     size_t *i, size_t *champion_number)
 {
@@ -89,9 +77,10 @@ int retrieve_champion(cpu_t *cpu, char const *const *argv,
         if (check_prog_number(cpu->champions[*champion_number], argv, i) ==
             FAILURE)
             return FAILURE;
-    if (my_strcmp(argv[*i], "-dump") == 0)
-        if (check_dump(cpu->champions[*champion_number], argv, i) == FAILURE)
-            return FAILURE;
+    if (my_strcmp(argv[*i], "-dump") == 0) {
+        *i += 1;
+        return SUCCESS;
+    }
     if (check_champions(cpu->champions[*champion_number], argv, i,
         champion_number) == FAILURE)
         return FAILURE;
