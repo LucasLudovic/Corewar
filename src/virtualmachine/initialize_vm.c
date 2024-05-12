@@ -22,6 +22,7 @@ int check_load_address(champions_t *champion, char const *const *argv,
     if (my_str_isnum(argv[*i + 1]) == 0)
         return display_error("argument after -a must be a number\n");
     champion->load_address = my_getnbr(argv[*i + 1]);
+    champion->pre_load = TRUE;
     *i += 2;
     return SUCCESS;
 }
@@ -111,6 +112,7 @@ int initialize_champions(cpu_t *cpu)
         cpu->champions[i]->borrow = 0;
         cpu->champions[i]->nbr_cycles = 0;
         cpu->champions[i]->play_number = 0;
+        cpu->champions[i]->pre_load = FALSE;
         cpu->champions[i]->load_address = 0;
         cpu->champions[i]->program_counter = 0;
         cpu->nb_champions += 1;
