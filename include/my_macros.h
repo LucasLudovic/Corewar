@@ -12,6 +12,6 @@
     #define SUCCESS 0
     #define TRUE 1
     #define FALSE 0
-    #define NB_CHAMPIONS 2
+    #define NB_CHAMPIONS 4
 
 #endif

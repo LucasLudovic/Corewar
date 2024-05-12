@@ -9,6 +9,7 @@
 #include "champions/champions.h"
 #include "my_macros.h"
 #include "my.h"
+#include "op.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -34,15 +35,17 @@ int check_champions(champions_t *champion, char const *const *argv,
     if (len <= 4)
         return 1;
     if (argv[*i][len - 1] != 'r')
-        return display_error("champion must be .cor file");
+        return display_error("champion must be .cor file\n");
     if (argv[*i][len - 2] != 'o')
-        return display_error("champion must be .cor file");
+        return display_error("champion must be .cor file\n");
     if (argv[*i][len - 3] != 'c')
-        return display_error("champion must be .cor file");
+        return display_error("champion must be .cor file\n");
     if (argv[*i][len - 4] != '.')
-        return display_error("champion must be .cor file");
+        return display_error("champion must be .cor file\n");
     champion->name = my_strdup(argv[*i]);
     champion->file_stream = fopen(argv[*i], "rb");
+    if (champion->file_stream == NULL)
+        return display_error("Can't open file\n");
     *i += 1;
     *champion_number += 1;
     return SUCCESS;
@@ -101,6 +104,7 @@ int initialize_champions(cpu_t *cpu)
         cpu->champions[i] = malloc(sizeof(champions_t));
         if (cpu->champions[i] == NULL)
             return display_error("Unable to alloc memory to champion");
+        cpu->champions[i]->header = NULL;
         cpu->champions[i]->name = NULL;
         cpu->champions[i]->file_stream = NULL;
         cpu->champions[i]->carry = 0;
@@ -112,6 +116,23 @@ int initialize_champions(cpu_t *cpu)
         cpu->nb_champions += 1;
     }
     return SUCCESS;
+}
+
+static
+void destroy_unused_champion(champions_t **champions)
+{
+    if (*champions == NULL)
+        return;
+    if ((*champions)->name != NULL) {
+        free((*champions)->name);
+        (*champions)->name = NULL;
+    }
+    if ((*champions)->file_stream != NULL)
+        fclose((*champions)->file_stream);
+    if (champions != NULL) {
+        free(*champions);
+        *champions = NULL;
+    }
 }
 
 int initialize_vm(cpu_t *cpu, char const *const *argv)
@@ -128,5 +149,9 @@ int initialize_vm(cpu_t *cpu, char const *const *argv)
     while (argv[i] != NULL)
         if (retrieve_champion(cpu, argv, &i, &champion_number) == FAILURE)
             return FAILURE;
+    if (champion_number <= 2)
+        destroy_unused_champion(&cpu->champions[2]);
+    if (champion_number <= 3)
+        destroy_unused_champion(&cpu->champions[3]);
     return SUCCESS;
 }

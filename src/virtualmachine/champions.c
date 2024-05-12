@@ -7,6 +7,8 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <endian.h>
 #include "virtualmachine/initialize_vm.h"
 #include "my_macros.h"
 #include "champions/champions.h"
@@ -17,6 +19,15 @@ static
 int retrieve_champion_header(UNUSED cpu_t *vm,
     UNUSED const size_t champion_number)
 {
+    header_t *buffer = NULL;
+    champions_t *champions = vm->champions[champion_number];
+
+    buffer = malloc(sizeof(header_t));
+    if (buffer == NULL)
+        return display_error("Unable to alloc header\n");
+    fread(buffer, sizeof(header_t), 1, champions->file_stream);
+    champions->header = buffer;
+    champions->header->prog_size = htobe32(champions->header->prog_size);
     return SUCCESS;
 }
 

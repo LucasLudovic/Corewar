@@ -16,6 +16,7 @@ typedef struct champions {
     FILE *file_stream;
     uint32_t registers[REG_NUMBER];
     uint64_t program_counter;
+    header_t *header;
     int load_address;
     int play_number;
     int carry;
