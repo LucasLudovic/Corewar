@@ -216,6 +216,7 @@ int set_load_address(cpu_t *cpu)
         cpu->champions[i]->program_counter = cpu->champions[i]->load_address;
         cpu->champions[i]->instructions =
             cpu->memory[cpu->champions[i]->program_counter];
+        printf("load address n°%ld = %d\n", i, cpu->champions[i]->load_address);
     }
     return SUCCESS;
 }

@@ -22,6 +22,8 @@ int check_load_address(champions_t *champion, char const *const *argv,
     if (my_str_isnum(argv[*i + 1]) == 0)
         return display_error("argument after -a must be a number\n");
     champion->load_address = my_getnbr(argv[*i + 1]);
+    if (champion->load_address > MEM_SIZE)
+        champion->load_address %= MEM_SIZE;
     champion->pre_load = TRUE;
     *i += 2;
     return SUCCESS;
