@@ -11,6 +11,7 @@ SRC	+=	src/op.c
 SRC	+=	src/virtualmachine/initialize_vm.c
 SRC	+=	src/virtualmachine/champions.c
 SRC	+=	src/virtualmachine/virtual_machine.c
+SRC	+=	src/virtualmachine/set_load_address.c
 SRC	+=	src/instructions/instructions.c
 
 OBJ	=	$(SRC:.c=.o)

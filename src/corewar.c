@@ -11,6 +11,7 @@
 #include "my.h"
 #include "corewar.h"
 #include "my_macros.h"
+#include "virtualmachine/set_load_address.h"
 #include "virtualmachine/initialize_vm.h"
 
 static
@@ -40,6 +41,8 @@ int execute_corewar(char const *const *argv)
     }
     if (retrieve_champions_instructions(&cpu) == FAILURE)
         return FAILURE;
+    if (set_load_address(&cpu) == FAILURE)
+        return display_error("Unable to load address\n");
     if (execute_arena(&cpu) == FAILURE)
         return FAILURE;
     for (size_t i = 0; i < NB_CHAMPIONS && cpu.champions[i] != NULL; i += 1) {
