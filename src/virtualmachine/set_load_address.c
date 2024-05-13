@@ -212,7 +212,10 @@ int set_load_address(cpu_t *cpu)
         return FAILURE;
     if (check_load_address(cpu) == FAILURE)
         return FAILURE;
-    for (size_t i = 0; cpu->champions[i] != NULL; i += 1)
+    for (size_t i = 0; cpu->champions[i] != NULL; i += 1) {
         cpu->champions[i]->program_counter = cpu->champions[i]->load_address;
+        cpu->champions[i]->instructions =
+            cpu->memory[cpu->champions[i]->program_counter];
+    }
     return SUCCESS;
 }
