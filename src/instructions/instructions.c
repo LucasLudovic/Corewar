@@ -15,7 +15,7 @@
 static
 void update_program_counter(champions_t *champion, size_t nb_parameters)
 {
-    champion->program_counter += nb_parameters + CODING_BYTE + 1;
+    champion->program_counter += (nb_parameters + CODING_BYTE + 1) % MEM_SIZE;
 }
 
 static
