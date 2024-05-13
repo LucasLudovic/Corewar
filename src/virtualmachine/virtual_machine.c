@@ -25,13 +25,10 @@ int execute_single_champion(cpu_t *cpu, champions_t *champion)
 }
 
 static
-int execute_champions(cpu_t *cpu)
+void execute_champions(cpu_t *cpu)
 {
-    for (size_t i = 0; cpu->champions[i] != NULL && i < NB_CHAMPIONS; i += 1) {
-        if (execute_single_champion(cpu, cpu->champions[i]) == FAILURE)
-            return FAILURE;
-    }
-    return SUCCESS;
+    for (size_t i = 0; cpu->champions[i] != NULL && i < NB_CHAMPIONS; i += 1)
+        execute_single_champion(cpu, cpu->champions[i]);
 }
 
 int execute_arena(cpu_t *cpu)
@@ -39,8 +36,7 @@ int execute_arena(cpu_t *cpu)
     if (cpu == NULL)
         return display_error("Unable to access cpu informations\n");
     while (cpu->state != CPU_HALTED) {
-        if (execute_champions(cpu) == FAILURE)
-            return FAILURE;
+        execute_champions(cpu);
         cpu->nb_cycle += 1;
     }
     return SUCCESS;
