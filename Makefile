@@ -16,6 +16,7 @@ SRC	+=	src/instructions/instructions.c
 SRC	+=	src/opcodes/opcode.c
 SRC	+=	src/opcodes/opcode_0x01.c
 SRC	+=	src/opcodes/opcode_0x02.c
+SRC	+=	src/virtualmachine/set_load_address_with_preload.c
 
 OBJ	=	$(SRC:.c=.o)
 
