@@ -19,7 +19,7 @@ typedef struct champions {
     header_t *header;
     int pre_load;
     int load_address;
-    int play_number;
+    int player_number;
     int carry;
     int borrow;
     size_t nbr_cycles;

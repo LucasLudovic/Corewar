@@ -13,6 +13,9 @@ SRC	+=	src/virtualmachine/champions.c
 SRC	+=	src/virtualmachine/virtual_machine.c
 SRC	+=	src/virtualmachine/set_load_address.c
 SRC	+=	src/instructions/instructions.c
+SRC	+=	src/opcodes/opcode.c
+SRC	+=	src/opcodes/opcode_0x01.c
+SRC	+=	src/opcodes/opcode_0x02.c
 
 OBJ	=	$(SRC:.c=.o)
 
