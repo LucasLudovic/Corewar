@@ -15,7 +15,7 @@ int execute_opcode_zjmp(cpu_t *cpu, champions_t *champion)
     size_t first_parameter = 0;
 
     if (cpu == NULL || champion == NULL)
-        return display_error("Unable to retrieve structs for sub\n");
+        return display_error("Unable to retrieve structs for zjump\n");
     if (champion->carry == TRUE) {
         champion->program_counter += 5;
         champion->program_counter %= MEM_SIZE;

@@ -7,6 +7,7 @@
 
 #include "champions/champions.h"
 #include "opcodes/opcodes.h"
+#include "virtualmachine/initialize_vm.h"
 
 int (*instruction_table[])(cpu_t *cpu, champions_t *champion) = {
     &execute_opcode_live,
@@ -16,3 +17,90 @@ int (*instruction_table[])(cpu_t *cpu, champions_t *champion) = {
     &execute_opcode_sub,
     NULL
 };
+
+static
+int check_direct(cpu_t *cpu, champions_t *champion,
+    int *parameter, int byte_read)
+{
+        *parameter = cpu->memory[(champion->program_counter + byte_read + 1)
+            % MEM_SIZE];
+        *parameter <<= 2;
+        *parameter += cpu->memory[(champion->program_counter + byte_read + 2)
+            % MEM_SIZE];
+        *parameter <<= 2;
+        *parameter += cpu->memory[(champion->program_counter + byte_read + 3)
+            % MEM_SIZE];
+        *parameter <<= 2;
+        *parameter += cpu->memory[(champion->program_counter + byte_read + 4)
+            % MEM_SIZE];
+        return 4;
+}
+
+int retrieve_first_parameter(cpu_t *cpu, champions_t *champion,
+    int *first_parameter, int byte_read)
+{
+    int parameter = 0;
+    uint8_t coding_byte = cpu->memory[(champion->program_counter + 1)
+        % MEM_SIZE];
+
+    if (coding_byte >> 6 == 0x01) {
+        parameter = cpu->memory[(champion->program_counter + 2) % MEM_SIZE];
+        byte_read += 1;
+    }
+    if (coding_byte >> 6 == 0x02)
+        byte_read += check_direct(cpu, champion, &parameter, byte_read);
+    if (coding_byte >> 6 == 0x03) {
+        parameter = cpu->memory[(champion->program_counter + 2) % MEM_SIZE];
+        parameter <<= 2;
+        parameter += cpu->memory[(champion->program_counter + 3) % MEM_SIZE];
+        byte_read += 2;
+    }
+    *first_parameter = parameter;
+    return byte_read;
+}
+
+int retrieve_second_parameter(cpu_t *cpu, champions_t *champion,
+    int *first_parameter, int byte_read)
+{
+    int parameter = 0;
+    uint8_t coding_byte = cpu->memory[(champion->program_counter + 1)
+        % MEM_SIZE];
+
+    if (coding_byte >> 6 == 0x01) {
+        parameter = cpu->memory[(champion->program_counter + 2) % MEM_SIZE];
+        byte_read += 1;
+    }
+    if (coding_byte >> 6 == 0x02)
+        byte_read += check_direct(cpu, champion, &parameter, byte_read);
+    if (coding_byte >> 6 == 0x03) {
+        parameter = cpu->memory[(champion->program_counter + 2) % MEM_SIZE];
+        parameter <<= 2;
+        parameter += cpu->memory[(champion->program_counter + 3) % MEM_SIZE];
+        byte_read += 2;
+    }
+    *first_parameter = parameter;
+    return byte_read;
+}
+
+int retrieve_third_parameter(cpu_t *cpu, champions_t *champion,
+    int *first_parameter, int byte_read)
+{
+    int parameter = 0;
+    uint8_t coding_byte = cpu->memory[(champion->program_counter + 1)
+        % MEM_SIZE];
+
+    if (coding_byte >> 6 == 0x01) {
+        parameter = cpu->memory[(champion->program_counter + 2) % MEM_SIZE];
+        byte_read += 1;
+    }
+    if (coding_byte >> 6 == 0x02)
+        byte_read += check_direct(cpu, champion, &parameter, byte_read);
+    if (coding_byte >> 6 == 0x03) {
+        parameter = cpu->memory[(champion->program_counter + 2) % MEM_SIZE];
+        parameter <<= 2;
+        parameter += cpu->memory[(champion->program_counter + 3) % MEM_SIZE];
+        byte_read += 2;
+    }
+    *first_parameter = parameter;
+    return byte_read;
+}
