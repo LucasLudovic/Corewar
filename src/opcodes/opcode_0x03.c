@@ -20,11 +20,17 @@ void store_value(cpu_t *cpu, champions_t *champion, uint8_t coding_byte)
 
     first_param = cpu->memory[(champion->program_counter + 2) % MEM_SIZE];
     if ((coding_byte << 2) >> 6 & T_REG) {
-        second_param = cpu->memory[(champion->program_counter + 6) % MEM_SIZE];
+        second_param = cpu->memory[(champion->program_counter + 3) % MEM_SIZE];
         champion->registers[second_param] = champion->registers[first_param];
     }
     else {
-        second_param = cpu->memory[(champion->program_counter) % MEM_SIZE];
+        second_param = cpu->memory[(champion->program_counter + 3) % MEM_SIZE];
+        second_param = second_param << 2;
+        second_param = cpu->memory[(champion->program_counter + 4) % MEM_SIZE];
+        second_param = second_param << 2;
+        second_param = cpu->memory[(champion->program_counter + 5) % MEM_SIZE];
+        second_param = second_param << 2;
+        second_param = cpu->memory[(champion->program_counter + 6) % MEM_SIZE];
         cpu->memory[(champion->program_counter + second_param) % IDX_MOD] = champion->registers[first_param]; 
     }
 
