@@ -48,7 +48,6 @@ void retrieve_champions_first_instructions(cpu_t *cpu)
 int execute_arena(cpu_t *cpu)
 {
     cpu->cycle_max = CYCLE_TO_DIE;
-
     if (cpu == NULL)
         return display_error("Unable to access cpu informations\n");
     retrieve_champions_first_instructions(cpu);

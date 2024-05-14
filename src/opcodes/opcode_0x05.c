@@ -27,7 +27,8 @@ int execute_opcode_sub(cpu_t *cpu, champions_t *champion)
     second_parameter = cpu->memory[current_counter];
     current_counter += (current_counter + 1) % MEM_SIZE;
     third_parameter = cpu->memory[current_counter];
-    registers[third_parameter] = registers[first_parameter] - registers[second_parameter];
+    registers[third_parameter] =
+        registers[first_parameter] - registers[second_parameter];
     champion->carry = !champion->carry;
     return SUCCESS;
 }
