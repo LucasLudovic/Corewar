@@ -13,4 +13,3 @@ int (*instruction_table[])(cpu_t *cpu, champions_t *champion) = {
     &execute_opcode_ld,
     NULL
 };
-

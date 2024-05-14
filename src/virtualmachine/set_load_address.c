@@ -156,7 +156,6 @@ int check_load_address(cpu_t *cpu)
     size_t nb_champions = count_champions(cpu);
     size_t nb_preload = check_preload_champion(cpu);
 
-    printf("LOAD with %ld champions\n", nb_champions);
     if (nb_preload == 0)
         if (normal_load(cpu, nb_champions) == FAILURE)
             return FAILURE;
@@ -182,8 +181,6 @@ int set_load_address(cpu_t *cpu)
         cpu->champions[i]->program_counter = cpu->champions[i]->load_address;
         cpu->champions[i]->instructions =
             cpu->memory[cpu->champions[i]->program_counter];
-        printf("load address n°%ld = %d\n", i,
-            cpu->champions[i]->load_address);
     }
     return SUCCESS;
 }

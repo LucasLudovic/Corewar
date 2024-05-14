@@ -14,16 +14,8 @@
 
 int execute_opcode_live(cpu_t *cpu, champions_t *champion)
 {
-    size_t player_number = 0;
-
-    if (cpu == NULL || champion == NULL)
+    if (cpu == NULL || champion == NULL || champion->name == NULL)
         return display_error("Unable to retrieve structs in opcode live\n");
-    if (champion->name == NULL)
-        return display_error("Unable to retrieve champion name for live\n");
-    if (champion->file_stream == NULL)
-        return display_error("Unable to access the champion file stream\n");
-    if (player_number <= 0)
-        return display_error("Couldn't retrieve the right player's number\n");
     my_putstr("The player ");
     my_put_nbr(champion->player_number);
     my_putchar('(');

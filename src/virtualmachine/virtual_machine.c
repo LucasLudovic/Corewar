@@ -34,12 +34,22 @@ void execute_champions(cpu_t *cpu)
     }
 }
 
+static
+void retrieve_champions_first_instructions(cpu_t *cpu)
+{
+    for (size_t i = 0; cpu->champions[i] != NULL && i < NB_CHAMPIONS; i += 1) {
+        if (retrieve_instruction(cpu, cpu->champions[i]) == FAILURE)
+            cpu->champions[i]->alive = FALSE;
+    }
+}
+
 int execute_arena(cpu_t *cpu)
 {
     int cycle_max = CYCLE_TO_DIE;
 
     if (cpu == NULL)
         return display_error("Unable to access cpu informations\n");
+    retrieve_champions_first_instructions(cpu);
     while (cpu->state != CPU_HALTED) {
         execute_champions(cpu);
         cpu->nb_cycle += 1;

@@ -34,14 +34,16 @@ int check_single_instruction(cpu_t *cpu, champions_t *champion, int i)
 
 int execute_instruction(cpu_t *cpu, champions_t *champion)
 {
-    if (cpu == NULL || champion == NULL || champion->instructions == 0)
+    if (cpu == NULL || champion == NULL)
         return display_error("Unable to execute instructions\n");
     for (size_t i = 0; op_tab[i].code != 0 && instruction_table[i] != NULL;
         i += 1) {
-        if (check_single_instruction(cpu, champion, i) == SUCCESS)
+        if (check_single_instruction(cpu, champion, i) == SUCCESS) {
             return SUCCESS;
+        }
     }
-    return display_error("Unable to find the instruction\n");
+    champion->alive = FALSE;
+    return FAILURE;
 }
 
 int retrieve_instruction(cpu_t *cpu, champions_t *champion)

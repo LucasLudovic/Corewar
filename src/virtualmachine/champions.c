@@ -43,9 +43,9 @@ int retrieve_champion_body(cpu_t *vm, const size_t champion_number)
     memory_address = champion->load_address;
     memory_address %= MEM_SIZE;
     while (fread(&octet, sizeof(uint8_t), 1, champion->file_stream) == 1) {
+        vm->memory[memory_address] = octet;
         memory_address += 1;
         memory_address %= MEM_SIZE;
-        vm->memory[memory_address] = octet;
     }
     return SUCCESS;
 }

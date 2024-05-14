@@ -43,12 +43,6 @@ int execute_corewar(char const *const *argv)
         return FAILURE;
     if (execute_arena(&cpu) == FAILURE)
         return FAILURE;
-    for (size_t i = 0; i < NB_CHAMPIONS && cpu.champions[i] != NULL; i += 1) {
-        if (cpu.champions[i]->name != NULL)
-            printf("champions n°%ld = %s\n", i, cpu.champions[i]->name);
-        printf("load address = %d\n", cpu.champions[i]->load_address);
-        printf("prog number = %ld\n", cpu.champions[i]->program_counter);
-    }
     destroy_champions(&cpu);
     return SUCCESS;
 }
