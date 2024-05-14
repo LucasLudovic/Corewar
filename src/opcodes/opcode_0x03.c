@@ -41,7 +41,6 @@ void store_value(cpu_t *cpu, champions_t *champion, uint8_t coding_byte)
         new_pc += 3;
         assign_indirect(cpu, champion, &first_param, &second_param);
     }
-    printf("Zebi %d\n", second_param);
     champion->program_counter = (new_pc + 1) % MEM_SIZE;
 }
 
