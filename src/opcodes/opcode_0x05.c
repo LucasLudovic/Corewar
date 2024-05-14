@@ -20,7 +20,7 @@ int execute_opcode_sub(cpu_t *cpu, champions_t *champion)
     int third_parameter = 0;
 
     if (cpu == NULL || champion == NULL)
-        return display_error("Unable to retrieve structs for add\n");
+        return display_error("Unable to retrieve structs for sub\n");
     current_counter = (champion->program_counter + CODING_BYTE + 1) % MEM_SIZE;
     first_parameter = cpu->memory[current_counter];
     current_counter = (current_counter + 1) % MEM_SIZE;

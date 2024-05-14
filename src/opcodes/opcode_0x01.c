@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include "my.h"
 #include "champions/champions.h"
+#include "op.h"
 #include "virtualmachine/initialize_vm.h"
 #include "my_macros.h"
 
@@ -22,5 +23,6 @@ int execute_opcode_live(cpu_t *cpu, champions_t *champion)
     my_putstr(champion->name);
     my_putstr(") is alive.\n");
     champion->program_counter += 5;
+    champion->program_counter %= MEM_SIZE;
     return SUCCESS;
 }
