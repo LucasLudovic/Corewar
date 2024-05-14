@@ -46,17 +46,12 @@ int normal_load(cpu_t *cpu, size_t nb_champions)
     for (size_t i = 0; cpu->champions[i] != NULL; i += 1) {
         div -= cpu->champions[i]->header->prog_size;
     }
-    printf("div = %d\n", div);
     div /= nb_champions;
     for (size_t i = 0; cpu->champions[i] != NULL; i += 1) {
         cpu->champions[i]->load_address = load_address;
         load_address += cpu->champions[i]->header->prog_size;
         load_address += div;
     }
-    for (size_t i = 0; cpu->champions[i] != NULL; i += 1) {
-        printf("champion n°%ld = %d\n", i, cpu->champions[i]->load_address);
-    }
-    printf("memory = %d\n", MEM_SIZE);
     return SUCCESS;
 }
 

@@ -22,8 +22,6 @@ int execute_opcode_live(cpu_t *cpu, champions_t *champion)
         return display_error("Unable to retrieve champion name for live\n");
     if (champion->file_stream == NULL)
         return display_error("Unable to access the champion file stream\n");
-    if (fread(&player_number, sizeof(int), 1, champion->file_stream) <= 0)
-        return display_error("You arrived to the end of the file for live\n");
     if (player_number <= 0)
         return display_error("Couldn't retrieve the right player's number\n");
     my_putstr("The player ");
