@@ -12,6 +12,7 @@
 #include "virtualmachine/initialize_vm.h"
 #include "my_macros.h"
 #include "champions/champions.h"
+#include "virtualmachine/set_load_address.h"
 #include "op.h"
 #include "my.h"
 
@@ -54,8 +55,6 @@ int retrieve_single_champion(cpu_t *vm, const size_t champion_number)
 {
     if (retrieve_champion_header(vm, champion_number) == FAILURE)
         return display_error("Unable to retrieve a chamion header\n");
-    if (retrieve_champion_body(vm, champion_number) == FAILURE)
-        return display_error("Unable to retrieve a champion body\n");
     return SUCCESS;
 }
 
@@ -67,6 +66,13 @@ int retrieve_champions_instructions(cpu_t *virtual_machine)
         virtual_machine->champions[i] != NULL; i += 1) {
         if (retrieve_single_champion(virtual_machine, i) == FAILURE)
             return display_error("Unable to retrieve one of the champions");
+    }
+    if (set_load_address(virtual_machine) == FAILURE)
+        return display_error("Unable to load address\n");
+    for (size_t i = 0; i < virtual_machine->nb_champions &&
+        virtual_machine->champions[i] != NULL; i += 1) {
+        if (retrieve_champion_body(virtual_machine, i) == FAILURE)
+            return display_error("Unable to retrieve a champion body\n");
     }
     return SUCCESS;
 }
