@@ -5,6 +5,9 @@
 ** set_load_address_with_preload.c
 */
 
+#include "my_macros.h"
+#include "op.h"
+#include "virtualmachine/initialize_vm.h"
 #include "virtualmachine/set_load_address.h"
 
 static
@@ -75,12 +78,12 @@ void find_distance(cpu_t *cpu, int first_part, int second_part,
 
     for (int i = first_part; i != second_part; i += 1) {
         if (i > MEM_SIZE)
-            i = 1;
+            i = -1;
         first_space += 1;
     }
     for (int i = second_part; i != first_part; i += 1) {
         if (i > MEM_SIZE)
-            i = 1;
+            i = -1;
         second_space += 1;
     }
     if (first_space / 3 >= second_space)
@@ -89,6 +92,42 @@ void find_distance(cpu_t *cpu, int first_part, int second_part,
         handle_big_space(cpu, second_part, second_space, nb_champions);
     handle_each_side(cpu, first_part, first_space);
     handle_each_side_second(cpu, second_part, second_space);
+}
+
+static void handle_same_pleload_with_three_champions(cpu_t *cpu, int part)
+{
+    for (size_t i = 0; cpu->champions[i] != NULL; i += 1) {
+        if (cpu->champions[i]->pre_load == TRUE)
+            continue;
+        cpu->champions[i]->load_address = part + (MEM_SIZE / 2);
+        if (cpu->champions[i]->load_address > MEM_SIZE)
+            cpu->champions[i]->load_address %= MEM_SIZE;
+        cpu->champions[i]->pre_load = TRUE;
+    }
+}
+
+static void handle_same_pleload_with_four_champions(cpu_t *cpu, int part)
+{
+    for (size_t i = 0; cpu->champions[i] != NULL; i += 1) {
+        if (cpu->champions[i]->pre_load == TRUE)
+            continue;
+        cpu->champions[i]->load_address = part + (MEM_SIZE / 3);
+        if (cpu->champions[i]->load_address > MEM_SIZE)
+            cpu->champions[i]->load_address %= MEM_SIZE;
+        cpu->champions[i]->pre_load = TRUE;
+        part = cpu->champions[i]->load_address;
+    }
+}
+
+static
+void handle_same_preload_address(cpu_t *cpu, int nb_champions, int part)
+{
+    if (nb_champions == 3) {
+        handle_same_pleload_with_three_champions(cpu, part);
+    }
+    if (nb_champions == 4) {
+        handle_same_pleload_with_four_champions(cpu, part);
+    }
 }
 
 int set_load_with_two_preload(cpu_t *cpu, int nb_champions)
@@ -105,6 +144,10 @@ int set_load_with_two_preload(cpu_t *cpu, int nb_champions)
             second_part = cpu->champions[i]->load_address;
             break;
         }
+    }
+    if (first_part == second_part) {
+        handle_same_preload_address(cpu, nb_champions, first_part);
+        return SUCCESS;
     }
     find_distance(cpu, first_part, second_part, nb_champions);
     return SUCCESS;
