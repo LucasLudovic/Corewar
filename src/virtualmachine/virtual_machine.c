@@ -27,8 +27,10 @@ int execute_single_champion(cpu_t *cpu, champions_t *champion)
 static
 void execute_champions(cpu_t *cpu)
 {
-    for (size_t i = 0; cpu->champions[i] != NULL && i < NB_CHAMPIONS; i += 1)
-        execute_single_champion(cpu, cpu->champions[i]);
+    for (size_t i = 0; cpu->champions[i] != NULL && i < NB_CHAMPIONS; i += 1) {
+        if (execute_single_champion(cpu, cpu->champions[i]) == FAILURE)
+            cpu->champions[i]->alive = FALSE;
+    }
 }
 
 int execute_arena(cpu_t *cpu)
