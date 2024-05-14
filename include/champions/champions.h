@@ -24,8 +24,8 @@ typedef struct champions {
     int player_number;
     int carry;
     int borrow;
-    size_t nbr_cycles;
-    size_t previous_cycle;
+    int nbr_cycles;
+    int previous_cycle;
     uint8_t instructions;
 } champions_t;
 

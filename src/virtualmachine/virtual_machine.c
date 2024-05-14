@@ -8,6 +8,7 @@
 #include <stdint.h>
 #include "instructions/instructions.h"
 #include "champions/champions.h"
+#include "op.h"
 #include "virtualmachine/initialize_vm.h"
 #include "my_macros.h"
 #include "my.h"
@@ -35,11 +36,19 @@ void execute_champions(cpu_t *cpu)
 
 int execute_arena(cpu_t *cpu)
 {
+    int cycle_max = CYCLE_TO_DIE;
+
     if (cpu == NULL)
         return display_error("Unable to access cpu informations\n");
     while (cpu->state != CPU_HALTED) {
         execute_champions(cpu);
         cpu->nb_cycle += 1;
+        if (cpu->nb_cycle > cycle_max) {
+            cycle_max -= CYCLE_DELTA;
+            cpu->nb_cycle = 0;
+        }
+        if (cycle_max <= 0)
+            cpu->state = CPU_HALTED;
     }
     return SUCCESS;
 }
