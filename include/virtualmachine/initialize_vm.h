@@ -25,6 +25,7 @@ typedef struct cpu_s {
     champions_t *champions[NB_CHAMPIONS];
     cpu_state_t state;
     int nb_cycle;
+    int cycle_max;
 } cpu_t;
 
 int initialize_vm(cpu_t *cpu, char const *const *argv);

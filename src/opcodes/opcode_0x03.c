@@ -15,25 +15,26 @@
 static
 void store_value(cpu_t *cpu, champions_t *champion, uint8_t coding_byte)
 {
+    uint64_t new_pc = champion->program_counter + CODING_BYTE;
     uint32_t first_param = 0;
-    uint32_t second_param = 0;
+    uint16_t second_param = 0;
+    coding_byte = coding_byte << 2;
+    coding_byte = coding_byte >> 6;
 
     first_param = cpu->memory[(champion->program_counter + 2) % MEM_SIZE];
-    if ((coding_byte << 2) >> 6 & T_REG) {
-        second_param = cpu->memory[(champion->program_counter + 3) % MEM_SIZE];
+    second_param = cpu->memory[(champion->program_counter + 3) % MEM_SIZE];
+    if (coding_byte == 0x01) {
+        new_pc += 2;
         champion->registers[second_param] = champion->registers[first_param];
     }
-    else {
-        second_param = cpu->memory[(champion->program_counter + 3) % MEM_SIZE];
+    if (coding_byte == 0x03) {
+        new_pc += 3;
         second_param = second_param << 2;
         second_param += cpu->memory[(champion->program_counter + 4) % MEM_SIZE];
         second_param = second_param << 2;
-        second_param += cpu->memory[(champion->program_counter + 5) % MEM_SIZE];
-        second_param = second_param << 2;
-        second_param += cpu->memory[(champion->program_counter + 6) % MEM_SIZE];
         cpu->memory[(champion->program_counter + second_param) % IDX_MOD] = champion->registers[first_param]; 
     }
-
+    champion->program_counter = (new_pc + 1) % MEM_SIZE;
 }
 
 int execute_opcode_st(cpu_t *cpu, champions_t *champion)

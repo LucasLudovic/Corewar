@@ -19,8 +19,10 @@ int execute_single_champion(cpu_t *cpu, champions_t *champion)
     if (champion->nbr_cycles == cpu->nb_cycle) {
         if (execute_instruction(cpu, champion) == FAILURE)
             return FAILURE;
-        if (retrieve_instruction(cpu, champion) == FAILURE)
+        if (retrieve_instruction(cpu, champion) == FAILURE) {
             return FAILURE;
+        printf("Test : %x\n", champion->instructions);
+        }
     }
     return SUCCESS;
 }
@@ -45,7 +47,7 @@ void retrieve_champions_first_instructions(cpu_t *cpu)
 
 int execute_arena(cpu_t *cpu)
 {
-    int cycle_max = CYCLE_TO_DIE;
+    cpu->cycle_max = CYCLE_TO_DIE;
 
     if (cpu == NULL)
         return display_error("Unable to access cpu informations\n");
@@ -53,11 +55,11 @@ int execute_arena(cpu_t *cpu)
     while (cpu->state != CPU_HALTED) {
         execute_champions(cpu);
         cpu->nb_cycle += 1;
-        if (cpu->nb_cycle > cycle_max) {
-            cycle_max -= CYCLE_DELTA;
+        if (cpu->nb_cycle > cpu->cycle_max) {
+            cpu->cycle_max -= CYCLE_DELTA;
             cpu->nb_cycle = 0;
         }
-        if (cycle_max <= 0)
+        if (cpu->cycle_max <= 0)
             cpu->state = CPU_HALTED;
     }
     return SUCCESS;

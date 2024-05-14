@@ -13,25 +13,10 @@
 #include "op.h"
 
 static
-void update_program_counter(champions_t *champion, size_t nb_parameters)
-{
-    champion->program_counter = champion->program_counter + nb_parameters + 1;
-    if (champion->instructions != 0x01 && champion->instructions != 0x09
-        && champion->instructions != 0x0c && champion->instructions != 0x0f) {
-        champion->program_counter += 1;
-    }
-    champion->program_counter %= MEM_SIZE;
-}
-
-static
 int check_single_instruction(cpu_t *cpu, champions_t *champion, int i)
 {
-    size_t nb_parameters = 0;
-
     if (champion->instructions == op_tab[i].code) {
-        nb_parameters = op_tab[i].nbr_args;
         instruction_table[i](cpu, champion);
-        update_program_counter(champion, nb_parameters);
         return SUCCESS;
     }
     return FAILURE;
@@ -51,10 +36,22 @@ int execute_instruction(cpu_t *cpu, champions_t *champion)
     return FAILURE;
 }
 
+static
+void retrieve_instruction_cycle(cpu_t *cpu, champions_t *champion)
+{
+    for (size_t i = 0; op_tab[i].code != 0; i += 1) {
+        if (op_tab[i].code == champion->instructions) {
+            champion->nbr_cycles = cpu->nb_cycle + op_tab[i].nbr_cycles;
+            champion->nbr_cycles %= cpu->cycle_max;
+        }
+    }
+}
+
 int retrieve_instruction(cpu_t *cpu, champions_t *champion)
 {
     if (cpu == NULL || champion == NULL)
         return display_error("Unable to retrieve instructions\n");
     champion->instructions = cpu->memory[champion->program_counter];
+    retrieve_instruction_cycle(cpu, champion);
     return SUCCESS;
 }
