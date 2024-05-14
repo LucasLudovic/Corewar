@@ -18,7 +18,6 @@ void assign_indirect(cpu_t *cpu, champions_t *champion,
 {
     *second_param = *second_param << 2;
     *second_param += cpu->memory[(champion->program_counter + 4) % MEM_SIZE];
-    *second_param = *second_param << 2;
     cpu->memory[(champion->program_counter + *second_param) % IDX_MOD] =
         champion->registers[*first_param];
 }
@@ -42,6 +41,7 @@ void store_value(cpu_t *cpu, champions_t *champion, uint8_t coding_byte)
         new_pc += 3;
         assign_indirect(cpu, champion, &first_param, &second_param);
     }
+    printf("Zebi %d\n", second_param);
     champion->program_counter = (new_pc + 1) % MEM_SIZE;
 }
 
