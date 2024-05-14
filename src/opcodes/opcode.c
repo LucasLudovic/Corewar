@@ -66,6 +66,7 @@ int retrieve_second_parameter(cpu_t *cpu, champions_t *champion,
     uint8_t coding_byte = cpu->memory[(champion->program_counter + 1)
         % MEM_SIZE];
 
+    coding_byte = coding_byte << 2;
     if (coding_byte >> 6 == 0x01) {
         parameter = cpu->memory[(champion->program_counter + 2) % MEM_SIZE];
         byte_read += 1;
@@ -89,6 +90,7 @@ int retrieve_third_parameter(cpu_t *cpu, champions_t *champion,
     uint8_t coding_byte = cpu->memory[(champion->program_counter + 1)
         % MEM_SIZE];
 
+    coding_byte = coding_byte << 4;
     if (coding_byte >> 6 == 0x01) {
         parameter = cpu->memory[(champion->program_counter + 2) % MEM_SIZE];
         byte_read += 1;
