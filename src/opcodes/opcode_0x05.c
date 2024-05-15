@@ -11,6 +11,14 @@
 #include "my.h"
 #include "my_macros.h"
 
+static
+void update_champion(champions_t *champion)
+{
+    champion->carry = !champion->carry;
+    champion->program_counter += CODING_BYTE + 3 + 1;
+    champion->program_counter %= MEM_SIZE;
+}
+
 int execute_opcode_sub(cpu_t *cpu, champions_t *champion)
 {
     uint32_t *registers = champion->registers;
@@ -30,8 +38,6 @@ int execute_opcode_sub(cpu_t *cpu, champions_t *champion)
     third_parameter = cpu->memory[current_counter];
     registers[third_parameter] =
         registers[first_parameter] - registers[second_parameter];
-    champion->carry = !champion->carry;
-    champion->program_counter += CODING_BYTE + 3 + 1;
-    champion->program_counter %= MEM_SIZE;
+    update_champion(champion);
     return SUCCESS;
 }

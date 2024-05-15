@@ -53,9 +53,7 @@ int update_register(cpu_t *cpu, champions_t *champion, uint8_t coding_byte)
         assign_indirect(cpu, champion, &first_param, &second_param);
     }
     compute_register_value(champion, first_param, second_param);
-    printf("PC : %lu\n", champion->program_counter);
     champion->program_counter = (new_pc + 1) % MEM_SIZE;
-    printf("PC : %lu\n", champion->program_counter);
     return SUCCESS;
 }
 

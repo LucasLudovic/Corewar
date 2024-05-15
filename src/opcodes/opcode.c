@@ -46,6 +46,18 @@ int check_direct(cpu_t *cpu, champions_t *champion,
         return 4;
 }
 
+static
+void check_indirect(cpu_t *cpu, champions_t *champion, size_t *parameter,
+    int *byte_read)
+{
+    *parameter = cpu->memory[(champion->program_counter + *byte_read + 1)
+        % MEM_SIZE];
+    *parameter <<= 2;
+    *parameter += cpu->memory[(champion->program_counter + *byte_read + 2)
+        % MEM_SIZE];
+    *byte_read += 2;
+}
+
 int retrieve_first_parameter(cpu_t *cpu, champions_t *champion,
     size_t *first_parameter, int byte_read)
 {
@@ -61,10 +73,7 @@ int retrieve_first_parameter(cpu_t *cpu, champions_t *champion,
         byte_read += check_direct(cpu, champion, &parameter, byte_read);
     if (coding_byte >> 6 == 0x03 ||
         ((coding_byte >> 6 == 0x02) && champion->index == true)) {
-        parameter = cpu->memory[(champion->program_counter + 2) % MEM_SIZE];
-        parameter <<= 2;
-        parameter += cpu->memory[(champion->program_counter + 3) % MEM_SIZE];
-        byte_read += 2;
+        check_indirect(cpu, champion, &parameter, &byte_read);
     }
     *first_parameter = parameter;
     return byte_read;
@@ -79,17 +88,15 @@ int retrieve_second_parameter(cpu_t *cpu, champions_t *champion,
 
     coding_byte = coding_byte << 2;
     if (coding_byte >> 6 == 0x01) {
-        parameter = cpu->memory[(champion->program_counter + byte_read + 1) % MEM_SIZE];
+        parameter = cpu->memory[(champion->program_counter + byte_read + 1)
+            % MEM_SIZE];
         byte_read += 1;
     }
     if (coding_byte >> 6 == 0x02 && champion->index == false)
         byte_read += check_direct(cpu, champion, &parameter, byte_read);
     if (coding_byte >> 6 == 0x03 ||
         ((coding_byte >> 6 == 0x02) && champion->index == true)) {
-        parameter = cpu->memory[(champion->program_counter + byte_read + 1) % MEM_SIZE];
-        parameter <<= 2;
-        parameter += cpu->memory[(champion->program_counter + byte_read + 2) % MEM_SIZE];
-        byte_read += 2;
+        check_indirect(cpu, champion, &parameter, &byte_read);
     }
     *first_parameter = parameter;
     return byte_read;
@@ -104,17 +111,15 @@ int retrieve_third_parameter(cpu_t *cpu, champions_t *champion,
 
     coding_byte = coding_byte << 4;
     if (coding_byte >> 6 == 0x01) {
-        parameter = cpu->memory[(champion->program_counter + byte_read + 1) % MEM_SIZE];
+        parameter = cpu->memory[(champion->program_counter + byte_read + 1)
+            % MEM_SIZE];
         byte_read += 1;
     }
     if (coding_byte >> 6 == 0x02 && champion->index == false)
         byte_read += check_direct(cpu, champion, &parameter, byte_read);
     if (coding_byte >> 6 == 0x03 ||
         ((coding_byte >> 6 == 0x02) && champion->index == true)) {
-        parameter = cpu->memory[(champion->program_counter + byte_read + 1) % MEM_SIZE];
-        parameter <<= 2;
-        parameter += cpu->memory[(champion->program_counter + byte_read + 2) % MEM_SIZE];
-        byte_read += 2;
+        check_indirect(cpu, champion, &parameter, &byte_read);
     }
     *first_parameter = parameter;
     return byte_read;
