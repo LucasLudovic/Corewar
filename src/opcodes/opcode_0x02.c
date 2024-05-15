@@ -21,7 +21,7 @@ int update_register(cpu_t *cpu, champions_t *champion)
 {
     size_t first_param = 0;
     size_t second_param = 0;
-    int bytes = 0;
+    int bytes = 1;
     int previons_bytes = 0;
 
     bytes = retrieve_first_parameter(cpu, champion, &first_param, bytes);
