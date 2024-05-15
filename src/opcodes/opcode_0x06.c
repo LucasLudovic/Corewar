@@ -72,7 +72,7 @@ void retrieve_param(cpu_t *cpu, champions_t *champion)
     bytes[2] = bytes[0];
     bytes[0] = retrieve_third_parameter(cpu, champion, &param[2], bytes[0]);
     make_operation(champion, param, bytes);
-    champion->program_counter = (bytes[0] + 1) % MEM_SIZE;
+    champion->program_counter = (champion->program_counter + (bytes[0] + 1)) % MEM_SIZE;
 }
 
 int execute_opcode_and(cpu_t *cpu, champions_t *champion)
