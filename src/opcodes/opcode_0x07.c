@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2024
 ** corewar
 ** File description:
-** opcode_0x06.c
+** opcode_0x07.c
 */
 
 #include "champions/champions.h"
@@ -15,13 +15,13 @@ static
 void first_param_register(champions_t *champion, size_t param[3], int bytes[3])
 {
     if (bytes[1] == 2 && bytes[2] == 3)
-        champion->registers[param[2]] = champion->registers[param[0]] &
+        champion->registers[param[2]] = champion->registers[param[0]] |
             champion->registers[param[1]];
     if (bytes[1] == 2 && bytes[2] == 4)
-        champion->registers[param[2]] = champion->registers[param[0]] &
+        champion->registers[param[2]] = champion->registers[param[0]] |
             param[1];
     if (bytes[1] == 2 && bytes[2] == 6)
-        champion->registers[param[2]] = champion->registers[param[0]] &
+        champion->registers[param[2]] = champion->registers[param[0]] |
             param[2];
 }
 
@@ -29,26 +29,26 @@ static
 void first_param_direct(champions_t *champion, size_t param[3], int bytes[3])
 {
     if (bytes[1] == 3 && bytes[2] == 4)
-        champion->registers[param[2]] = param[0] &
+        champion->registers[param[2]] = param[0] |
             champion->registers[param[1]];
     if (bytes[1] == 3 && bytes[2] == 5)
-        champion->registers[param[2]] = champion->registers[param[0]] &
+        champion->registers[param[2]] = champion->registers[param[0]] |
             param[1];
     if (bytes[1] == 3 && bytes[2] == 7)
-        champion->registers[param[2]] = param[0] & param[2];
+        champion->registers[param[2]] = param[0] | param[2];
 }
 
 static
 void first_param_indirect(champions_t *champion, size_t param[3], int bytes[3])
 {
     if (bytes[1] == 5 && bytes[2] == 6)
-        champion->registers[param[2]] = param[0] &
+        champion->registers[param[2]] = param[0] |
             champion->registers[param[1]];
     if (bytes[1] == 5 && bytes[2] == 7)
-        champion->registers[param[2]] = champion->registers[param[0]] &
+        champion->registers[param[2]] = champion->registers[param[0]] |
             param[1];
     if (bytes[1] == 5 && bytes[2] == 9)
-        champion->registers[param[2]] = param[0] & param[2];
+        champion->registers[param[2]] = param[0] | param[2];
 }
 
 static
@@ -75,10 +75,10 @@ void retrieve_param(cpu_t *cpu, champions_t *champion)
         % MEM_SIZE;
 }
 
-int execute_opcode_and(cpu_t *cpu, champions_t *champion)
+int execute_opcode_or(cpu_t *cpu, champions_t *champion)
 {
     if (cpu == NULL || champion == NULL)
-        return display_error("Unable to retrieve structs for and\n");
+        return display_error("Unable to retrieve structs for or\n");
     champion->index = false;
     retrieve_param(cpu, champion);
     champion->carry = !champion->carry;

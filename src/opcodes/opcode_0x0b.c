@@ -53,6 +53,7 @@ int execute_opcode_sti(cpu_t *cpu, champions_t *champion)
     byte_read = retrieve_address(cpu, champion, &address_to_modify, byte_read);
     cpu->memory[(champion->program_counter + (address_to_modify % IDX_MOD))
         % MEM_SIZE] = champion->registers[first_param];
-    champion->program_counter = (byte_read + 1) % MEM_SIZE;
+    champion->program_counter = (champion->program_counter + (byte_read + 1))
+        % MEM_SIZE;
     return SUCCESS;
 }
