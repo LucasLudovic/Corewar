@@ -94,6 +94,7 @@ static
 int initialize_champions(cpu_t *cpu)
 {
     cpu->dump = 0;
+    cpu->champions = malloc(sizeof(champions_t) * NB_CHAMPIONS + 1);
     for (size_t i = 0; i < NB_CHAMPIONS; i += 1) {
         cpu->champions[i] = malloc(sizeof(champions_t));
         if (cpu->champions[i] == NULL)
@@ -111,6 +112,7 @@ int initialize_champions(cpu_t *cpu)
         cpu->champions[i]->program_counter = 0;
         cpu->nb_champions += 1;
     }
+    cpu->champions[4] = NULL;
     return SUCCESS;
 }
 
