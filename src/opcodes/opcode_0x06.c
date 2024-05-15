@@ -10,7 +10,6 @@
 #include "op.h"
 #include "virtualmachine/initialize_vm.h"
 #include "opcodes/opcodes.h"
-#include <stdint.h>
 
 static
 void first_param_register(champions_t *champion, size_t param[3], int bytes[3])
@@ -78,7 +77,7 @@ void retrieve_param(cpu_t *cpu, champions_t *champion)
 int execute_opcode_and(cpu_t *cpu, champions_t *champion)
 {
     if (cpu == NULL || champion == NULL)
-        return display_error("Unable to retrieve structs for st\n");
+        return display_error("Unable to retrieve structs for and\n");
     champion->index = false;
     retrieve_param(cpu, champion);
     champion->carry = !champion->carry;
