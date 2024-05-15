@@ -24,6 +24,7 @@ int execute_opcode_add(cpu_t *cpu, champions_t *champion);
 int execute_opcode_sub(cpu_t *cpu, champions_t *champion);
 int execute_opcode_and(cpu_t *cpu, champions_t *champion);
 int execute_opcode_or(cpu_t *cpu, champions_t *champion);
+int execute_opcode_xor(cpu_t *cpu, champions_t *champion);
 int execute_opcode_zjmp(cpu_t *cpu, champions_t *champion);
 int execute_opcode_sti(cpu_t *cpu, champions_t *champion);
 int execute_opcode_lld(cpu_t *cpu, champions_t *champion);

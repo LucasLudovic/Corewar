@@ -17,7 +17,7 @@ int (*instruction_table[])(cpu_t *cpu, champions_t *champion) = {
     &execute_opcode_sub,
     &execute_opcode_and,
     &execute_opcode_or,
-    NULL,
+    &execute_opcode_xor,
     &execute_opcode_zjmp,
     NULL,
     &execute_opcode_sti,
