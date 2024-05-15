@@ -21,6 +21,7 @@ SRC	+=	src/opcodes/opcode_0x04.c
 SRC	+=	src/opcodes/opcode_0x05.c
 SRC	+=	src/opcodes/opcode_0x06.c
 SRC	+=	src/opcodes/opcode_0x09.c
+SRC	+=	src/opcodes/opcode_0x0a.c
 SRC	+=	src/opcodes/opcode_0x0b.c
 SRC	+=	src/opcodes/opcode_0x0d.c
 SRC	+=	src/virtualmachine/set_load_address_with_preload.c

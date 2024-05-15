@@ -19,7 +19,7 @@ int (*instruction_table[])(cpu_t *cpu, champions_t *champion) = {
     NULL,
     NULL,
     &execute_opcode_zjmp,
-    NULL,
+    &execute_opcode_ldi,
     &execute_opcode_sti,
     NULL,
     &execute_opcode_lld,
@@ -34,13 +34,13 @@ int check_direct(cpu_t *cpu, champions_t *champion,
 {
         *parameter = cpu->memory[(champion->program_counter + byte_read + 1)
             % MEM_SIZE];
-        *parameter <<= 2;
+        *parameter <<= 8;
         *parameter += cpu->memory[(champion->program_counter + byte_read + 2)
             % MEM_SIZE];
-        *parameter <<= 2;
+        *parameter <<= 8;
         *parameter += cpu->memory[(champion->program_counter + byte_read + 3)
             % MEM_SIZE];
-        *parameter <<= 2;
+        *parameter <<= 8;
         *parameter += cpu->memory[(champion->program_counter + byte_read + 4)
             % MEM_SIZE];
         return 4;
@@ -52,7 +52,7 @@ void check_indirect(cpu_t *cpu, champions_t *champion, size_t *parameter,
 {
     *parameter = cpu->memory[(champion->program_counter + *byte_read + 1)
         % MEM_SIZE];
-    *parameter <<= 2;
+    *parameter <<= 8;
     *parameter += cpu->memory[(champion->program_counter + *byte_read + 2)
         % MEM_SIZE];
     *byte_read += 2;

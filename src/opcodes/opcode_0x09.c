@@ -23,11 +23,11 @@ int execute_opcode_zjmp(cpu_t *cpu, champions_t *champion)
         return SUCCESS;
     }
     first_parameter = cpu->memory[(champion->program_counter + 1) % MEM_SIZE];
-    first_parameter <<= 2;
+    first_parameter <<= 8;
     first_parameter += cpu->memory[(champion->program_counter + 2) % MEM_SIZE];
-    first_parameter <<= 2;
+    first_parameter <<= 8;
     first_parameter += cpu->memory[(champion->program_counter + 3) % MEM_SIZE];
-    first_parameter <<= 2;
+    first_parameter <<= 8;
     first_parameter += cpu->memory[(champion->program_counter + 4) % MEM_SIZE];
     champion->program_counter += (first_parameter % IDX_MOD);
     champion->program_counter %= MEM_SIZE;
