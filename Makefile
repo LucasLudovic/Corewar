@@ -20,6 +20,7 @@ SRC	+=	src/opcodes/opcode_0x03.c
 SRC	+=	src/opcodes/opcode_0x04.c
 SRC	+=	src/opcodes/opcode_0x05.c
 SRC	+=	src/opcodes/opcode_0x06.c
+SRC	+=	src/opcodes/opcode_0x07.c
 SRC	+=	src/opcodes/opcode_0x09.c
 SRC	+=	src/opcodes/opcode_0x0b.c
 SRC	+=	src/opcodes/opcode_0x0d.c
