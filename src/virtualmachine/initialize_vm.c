@@ -47,6 +47,7 @@ int check_champions(champions_t *champion, char const *const *argv,
         return display_error("champion must be .cor file\n");
     champion->name = my_strdup(argv[*i]);
     champion->file_stream = fopen(argv[*i], "rb");
+    champion->alive = TRUE;
     if (champion->file_stream == NULL)
         return display_error("Can't open file\n");
     *i += 1;

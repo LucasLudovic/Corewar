@@ -21,7 +21,6 @@ int execute_single_champion(cpu_t *cpu, champions_t *champion)
             return FAILURE;
         if (retrieve_instruction(cpu, champion) == FAILURE) {
             return FAILURE;
-        printf("Test : %x\n", champion->instructions);
         }
     }
     return SUCCESS;
@@ -31,7 +30,8 @@ static
 void execute_champions(cpu_t *cpu)
 {
     for (size_t i = 0; cpu->champions[i] != NULL && i < NB_CHAMPIONS; i += 1) {
-        if (execute_single_champion(cpu, cpu->champions[i]) == FAILURE)
+        if (cpu->champions[i]->alive == TRUE &&
+            execute_single_champion(cpu, cpu->champions[i]) == FAILURE)
             cpu->champions[i]->alive = FALSE;
     }
 }
