@@ -31,6 +31,20 @@ void destroy_champions(cpu_t *cpu)
     }
 }
 
+static
+void display_winner(cpu_t *cpu)
+{
+    if (cpu == NULL || cpu->winner == -1
+        || cpu->champions[cpu->winner] == NULL
+        || cpu->champions[cpu->winner]->header == NULL)
+        return;
+    my_putstr("The player ");
+    my_put_nbr(cpu->winner);
+    my_putstr(" (");
+    my_putstr(cpu->champions[cpu->winner]->header->prog_name);
+    my_putstr(") has won.");
+}
+
 int execute_corewar(char const *const *argv)
 {
     cpu_t cpu = { 0 };
@@ -43,6 +57,7 @@ int execute_corewar(char const *const *argv)
         return FAILURE;
     if (execute_arena(&cpu) == FAILURE)
         return FAILURE;
+    display_winner(&cpu);
     destroy_champions(&cpu);
     return SUCCESS;
 }
