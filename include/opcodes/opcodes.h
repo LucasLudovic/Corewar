@@ -29,5 +29,6 @@ int execute_opcode_zjmp(cpu_t *cpu, champions_t *champion);
 int execute_opcode_ldi(cpu_t *cpu, champions_t *champion);
 int execute_opcode_sti(cpu_t *cpu, champions_t *champion);
 int execute_opcode_lld(cpu_t *cpu, champions_t *champion);
+int execute_opcode_lldi(cpu_t *cpu, champions_t *champion);
 
 #endif
