@@ -145,6 +145,7 @@ int initialize_vm(cpu_t *cpu, char const *const *argv)
     while (argv[i] != NULL)
         if (retrieve_champion(cpu, argv, &i, &champion_number) == FAILURE)
             return FAILURE;
+    cpu->winner = -1;
     if (champion_number <= 2)
         destroy_unused_champion(&cpu->champions[2]);
     if (champion_number <= 3)

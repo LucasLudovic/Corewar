@@ -27,6 +27,7 @@ typedef struct cpu_s {
     int nb_cycle;
     int dump;
     int cycle_max;
+    int winner;
 } cpu_t;
 
 int initialize_vm(cpu_t *cpu, char const *const *argv);
