@@ -80,7 +80,8 @@ int retrieve_champion(cpu_t *cpu, char const *const *argv,
             FAILURE)
             return FAILURE;
     if (my_strcmp(argv[*i], "-dump") == 0) {
-        *i += 1;
+        cpu->dump = my_getnbr(argv[*i + 1]);
+        *i += 2;
         return SUCCESS;
     }
     if (check_champions(cpu->champions[*champion_number], argv, i,
@@ -92,6 +93,7 @@ int retrieve_champion(cpu_t *cpu, char const *const *argv,
 static
 int initialize_champions(cpu_t *cpu)
 {
+    cpu->dump = 0;
     for (size_t i = 0; i < NB_CHAMPIONS; i += 1) {
         cpu->champions[i] = malloc(sizeof(champions_t));
         if (cpu->champions[i] == NULL)

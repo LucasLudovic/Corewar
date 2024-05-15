@@ -25,6 +25,7 @@ typedef struct cpu_s {
     champions_t *champions[NB_CHAMPIONS];
     cpu_state_t state;
     int nb_cycle;
+    int dump;
     int cycle_max;
 } cpu_t;
 
