@@ -237,6 +237,7 @@ int execute_opcode_and(cpu_t *cpu, champions_t *champion)
 
     if (cpu == NULL || champion == NULL)
         return display_error("Unable to retrieve structs for st\n");
+    champion->index = false;
     make_operation(cpu, champion, coding_byte);
     return SUCCESS;
 }

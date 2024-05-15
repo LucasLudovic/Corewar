@@ -57,7 +57,7 @@ int update_register(cpu_t *cpu, champions_t *champion, uint8_t coding_byte)
     return SUCCESS;
 }
 
-int execute_opcode_ldd(cpu_t *cpu, champions_t *champion)
+int execute_opcode_lld(cpu_t *cpu, champions_t *champion)
 {
     uint8_t coding_byte = cpu->memory[champion->program_counter + 1];
 

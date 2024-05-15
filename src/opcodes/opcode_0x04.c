@@ -21,6 +21,7 @@ int execute_opcode_add(cpu_t *cpu, champions_t *champion)
 
     if (cpu == NULL || champion == NULL)
         return display_error("Unable to retrieve structs for add\n");
+    champion->index = false;
     current_counter = (champion->program_counter + CODING_BYTE + 1) % MEM_SIZE;
     first_parameter = cpu->memory[current_counter];
     current_counter = (current_counter + 1) % MEM_SIZE;
