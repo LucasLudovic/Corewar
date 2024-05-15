@@ -72,6 +72,7 @@ void retrieve_param(cpu_t *cpu, champions_t *champion)
     bytes[2] = bytes[0];
     bytes[0] = retrieve_third_parameter(cpu, champion, &param[2], bytes[0]);
     make_operation(champion, param, bytes);
+    champion->program_counter = (bytes[0] + 1) % MEM_SIZE;
 }
 
 int execute_opcode_and(cpu_t *cpu, champions_t *champion)
@@ -80,5 +81,6 @@ int execute_opcode_and(cpu_t *cpu, champions_t *champion)
         return display_error("Unable to retrieve structs for st\n");
     champion->index = false;
     retrieve_param(cpu, champion);
+    champion->carry = !champion->carry;
     return SUCCESS;
 }
