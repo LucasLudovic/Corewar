@@ -22,11 +22,11 @@ void first_param_register(champions_t *champion, size_t param[3], int bytes[3])
             param[1];
     if (bytes[1] == 2 && bytes[2] == 6)
         champion->registers[param[2]] = champion->registers[param[0]] |
-            param[2];
+            param[1];
 }
 
 static
-void first_param_direct(champions_t *champion, size_t param[3], int bytes[3])
+void first_param_indirect(champions_t *champion, size_t param[3], int bytes[3])
 {
     if (bytes[1] == 3 && bytes[2] == 4)
         champion->registers[param[2]] = param[0] |
@@ -35,11 +35,11 @@ void first_param_direct(champions_t *champion, size_t param[3], int bytes[3])
         champion->registers[param[2]] = champion->registers[param[0]] |
             param[1];
     if (bytes[1] == 3 && bytes[2] == 7)
-        champion->registers[param[2]] = param[0] | param[2];
+        champion->registers[param[2]] = param[0] | param[1];
 }
 
 static
-void first_param_indirect(champions_t *champion, size_t param[3], int bytes[3])
+void first_param_direct(champions_t *champion, size_t param[3], int bytes[3])
 {
     if (bytes[1] == 5 && bytes[2] == 6)
         champion->registers[param[2]] = param[0] |
@@ -48,7 +48,7 @@ void first_param_indirect(champions_t *champion, size_t param[3], int bytes[3])
         champion->registers[param[2]] = champion->registers[param[0]] |
             param[1];
     if (bytes[1] == 5 && bytes[2] == 9)
-        champion->registers[param[2]] = param[0] | param[2];
+        champion->registers[param[2]] = param[0] | param[1];
 }
 
 static
