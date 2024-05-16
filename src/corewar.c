@@ -22,7 +22,8 @@ void destroy_champions(cpu_t *cpu)
         return;
     if (cpu->champions == NULL)
         return;
-    for (size_t i = 0; cpu->champions[i] != NULL && i < cpu->init_champ; i += 1) {
+    for (size_t i = 0; cpu->champions[i] != NULL && i < cpu->init_champ;
+        i += 1) {
         if (cpu->champions[i]->name != NULL)
             free(cpu->champions[i]->name);
         if (cpu->champions[i]->file_stream != NULL)
@@ -45,7 +46,14 @@ void display_winner(cpu_t *cpu)
     my_put_nbr(cpu->winner);
     my_putstr("(");
     my_putstr(cpu->winner_name);
-    my_putstr(") has won.");
+    my_putstr(") has won.\n");
+}
+
+static
+void initialize_memory(cpu_t *cpu)
+{
+    for (size_t i = 0; i < MEM_SIZE; i += 1)
+        cpu->memory[i] = 0;
 }
 
 int execute_corewar(char const *const *argv)
@@ -56,6 +64,7 @@ int execute_corewar(char const *const *argv)
         destroy_champions(&cpu);
         return display_error("Unable to initialize the cpu\n");
     }
+    initialize_memory(&cpu);
     if (retrieve_champions_instructions(&cpu) == FAILURE)
         return FAILURE;
     if (execute_arena(&cpu) == FAILURE)

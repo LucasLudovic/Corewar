@@ -22,7 +22,6 @@ void copy_champion(cpu_t *cpu, champions_t *copy, champions_t *last_champion)
     copy->alive = last_champion->alive;
     copy->carry = last_champion->carry;
     copy->index = last_champion->index;
-    copy->borrow = last_champion->borrow;
     copy->pre_load = last_champion->pre_load;
     for (size_t i = 0; i < 16; i += 1)
         copy->registers[i] = last_champion->registers[i];

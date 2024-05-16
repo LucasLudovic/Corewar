@@ -105,7 +105,6 @@ int initialize_champions(cpu_t *cpu)
         cpu->champions[i]->name = NULL;
         cpu->champions[i]->file_stream = NULL;
         cpu->champions[i]->carry = 0;
-        cpu->champions[i]->borrow = 0;
         cpu->champions[i]->nbr_cycles = 0;
         cpu->champions[i]->player_number = 0;
         cpu->champions[i]->pre_load = FALSE;
@@ -113,6 +112,7 @@ int initialize_champions(cpu_t *cpu)
         cpu->champions[i]->program_counter = 0;
         cpu->nb_champions += 1;
     }
+    cpu->winner = -1;
     cpu->champions[NB_CHAMPIONS] = NULL;
     return SUCCESS;
 }
@@ -146,7 +146,6 @@ int initialize_vm(cpu_t *cpu, char const *const *argv)
     while (argv[i] != NULL)
         if (retrieve_champion(cpu, argv, &i, &champion_number) == FAILURE)
             return FAILURE;
-    cpu->winner = -1;
     if (champion_number <= 2)
         destroy_unused_champion(&cpu->champions[2]);
     if (champion_number <= 3)
@@ -155,7 +154,6 @@ int initialize_vm(cpu_t *cpu, char const *const *argv)
     cpu->init_champ = champion_number;
     cpu->champions = my_realloc(cpu->champions, (cpu->nb_champions + 1) *
         sizeof(champions_t *), (NB_CHAMPIONS + 1) * sizeof(champions_t *));
-    printf("first nb champ = %ld\n", cpu->nb_champions);
     cpu->champions[cpu->nb_champions] = NULL;
     return SUCCESS;
 }
