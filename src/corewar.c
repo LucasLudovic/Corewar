@@ -39,14 +39,12 @@ void destroy_champions(cpu_t *cpu)
 static
 void display_winner(cpu_t *cpu)
 {
-    if (cpu == NULL || cpu->winner == -1
-        || cpu->champions[cpu->winner] == NULL
-        || cpu->champions[cpu->winner]->header == NULL)
+    if (cpu == NULL || cpu->winner == -1 || cpu->winner_name == NULL)
         return;
     my_putstr("The player ");
     my_put_nbr(cpu->winner);
-    my_putstr(" (");
-    my_putstr(cpu->champions[cpu->winner]->header->prog_name);
+    my_putstr("(");
+    my_putstr(cpu->winner_name);
     my_putstr(") has won.");
 }
 
