@@ -43,7 +43,8 @@ SRC	=	my_find_prime_sup.c \
 		my_nbr_to_str.c	\
 		my_str_is_alpha_num.c	\
 		display_string_colored.c	\
-		clean_format.c
+		clean_format.c \
+		my_print_hexa_maj.c
 
 OBJ	=	$(SRC:.c=.o)
 

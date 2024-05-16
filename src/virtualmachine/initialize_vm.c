@@ -94,7 +94,7 @@ int retrieve_champion(cpu_t *cpu, char const *const *argv,
 static
 int initialize_champions(cpu_t *cpu)
 {
-    cpu->dump = 0;
+    cpu->dump = -1;
     cpu->champions = malloc(sizeof(champions_t) * NB_CHAMPIONS + 1);
     for (size_t i = 0; i < NB_CHAMPIONS; i += 1) {
         cpu->champions[i] = malloc(sizeof(champions_t));

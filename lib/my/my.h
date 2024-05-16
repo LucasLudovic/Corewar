@@ -50,6 +50,7 @@ char *my_strdup(char const *src);
 int display_error(char *error);
 char *my_nbr_to_str(int number);
 int my_str_is_alpha_num(char *str);
+int my_print_hexa_maj(unsigned number);
 char *clean_format(char *str, char *clean);
 
 #endif
