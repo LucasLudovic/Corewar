@@ -22,7 +22,7 @@ typedef struct champions {
     int pre_load;
     int load_address;
     int player_number;
-    int carry;
+    bool carry;
     int borrow;
     int nbr_cycles;
     uint8_t instructions;

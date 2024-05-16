@@ -85,6 +85,8 @@ int execute_opcode_lldi(cpu_t *cpu, champions_t *champion)
     update_register(cpu, champion, third_param, sum);
     champion->program_counter = (champion->program_counter + bytes + 1)
         % MEM_SIZE;
-    champion->carry = !champion->carry;
+    champion->carry = false;
+    if (champion->registers[third_param] == 0)
+        champion->carry = true;
     return SUCCESS;
 }

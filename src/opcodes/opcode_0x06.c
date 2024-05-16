@@ -73,6 +73,9 @@ void retrieve_param(cpu_t *cpu, champions_t *champion)
     make_operation(champion, param, bytes);
     champion->program_counter = (champion->program_counter + (bytes[0] + 1))
         % MEM_SIZE;
+    champion->carry = false;
+    if (champion->registers[param[3]] == 0)
+        champion->carry = true;
 }
 
 int execute_opcode_and(cpu_t *cpu, champions_t *champion)
@@ -81,6 +84,5 @@ int execute_opcode_and(cpu_t *cpu, champions_t *champion)
         return display_error("Unable to retrieve structs for and\n");
     champion->index = false;
     retrieve_param(cpu, champion);
-    champion->carry = !champion->carry;
     return SUCCESS;
 }

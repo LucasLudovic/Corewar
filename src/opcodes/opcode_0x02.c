@@ -34,6 +34,8 @@ int update_register(cpu_t *cpu, champions_t *champion)
             cpu->memory[champion->program_counter + first_param % IDX_MOD];
     champion->program_counter = (champion->program_counter + (bytes + 1))
         % MEM_SIZE;
+    if (first_param == 0)
+        champion->carry = true;
     return SUCCESS;
 }
 
@@ -42,6 +44,7 @@ int execute_opcode_ld(cpu_t *cpu, champions_t *champion)
     if (cpu == NULL || champion == NULL)
         return display_error("Unable to retrieve structs for ld\n");
     champion->index = false;
+    champion->carry = false;
     update_register(cpu, champion);
     return SUCCESS;
 }

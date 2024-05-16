@@ -58,14 +58,8 @@ int execute_corewar(char const *const *argv)
     }
     if (retrieve_champions_instructions(&cpu) == FAILURE)
         return FAILURE;
-    for (size_t i = 0; i < MEM_SIZE; i += 1)
-        printf("%x ", cpu.memory[i]);
-    printf("\n\n");
     if (execute_arena(&cpu) == FAILURE)
         return FAILURE;
-    for (size_t i = 0; i < MEM_SIZE; i += 1)
-        printf("%x ", cpu.memory[i]);
-    printf("\n\n");
     display_winner(&cpu);
     destroy_champions(&cpu);
     return SUCCESS;

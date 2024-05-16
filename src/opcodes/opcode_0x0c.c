@@ -29,7 +29,6 @@ void copy_champion(cpu_t *cpu, champions_t *copy, champions_t *last_champion)
     copy->file_stream = last_champion->file_stream;
     retrieve_instruction(cpu, copy);
     copy->player_number = last_champion->player_number;
-    copy->previous_cycle = last_champion->previous_cycle;
 }
 
 int execute_opcode_fork(cpu_t *cpu, champions_t *champion)
@@ -50,14 +49,9 @@ int execute_opcode_fork(cpu_t *cpu, champions_t *champion)
     free(copy);
     cpu->champions = my_realloc(cpu->champions, (cpu->nb_champions + 2) *
         sizeof(champions_t *), (cpu->nb_champions + 1) * sizeof(champions_t *));
-    printf("nb champ = %ld\n", cpu->nb_champions);
     cpu->champions[cpu->nb_champions] = malloc(sizeof(champions_t));
     copy_champion(cpu, cpu->champions[cpu->nb_champions], champion);
     cpu->champions[cpu->nb_champions]->load_address = (champion->program_counter + parameter) % IDX_MOD;
-    printf("name = %s\n", champion->header->prog_name);
-    printf("first load address = %ld\n", champion->program_counter);
-    printf("param = %lu\n", parameter);
-    printf("load address = %d\n", cpu->champions[cpu->nb_champions]->load_address);
     cpu->champions[cpu->nb_champions]->program_counter = cpu->champions[cpu->nb_champions]->load_address;
     cpu->champions[cpu->nb_champions + 1] = NULL;
     cpu->nb_champions += 1;

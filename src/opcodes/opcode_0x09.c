@@ -16,20 +16,16 @@ int execute_opcode_zjmp(cpu_t *cpu, champions_t *champion)
 
     if (cpu == NULL || champion == NULL)
         return display_error("Unable to retrieve structs for zjump\n");
-    champion->index = FALSE;
-    if (champion->carry == TRUE) {
-        champion->program_counter += 5;
+    champion->index = TRUE;
+    if (champion->carry == false) {
+        champion->program_counter += 3;
         champion->program_counter %= MEM_SIZE;
         return SUCCESS;
     }
     first_parameter = cpu->memory[(champion->program_counter + 1) % MEM_SIZE];
     first_parameter <<= 8;
     first_parameter += cpu->memory[(champion->program_counter + 2) % MEM_SIZE];
-    first_parameter <<= 8;
-    first_parameter += cpu->memory[(champion->program_counter + 3) % MEM_SIZE];
-    first_parameter <<= 8;
-    first_parameter += cpu->memory[(champion->program_counter + 4) % MEM_SIZE];
-    champion->program_counter += (first_parameter % IDX_MOD);
+    champion->program_counter += ((short)first_parameter % IDX_MOD);
     champion->program_counter %= MEM_SIZE;
     return SUCCESS;
 }

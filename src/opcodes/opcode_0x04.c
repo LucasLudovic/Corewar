@@ -12,9 +12,11 @@
 #include "my_macros.h"
 
 static
-void update_champion(champions_t *champion)
+void update_champion(champions_t *champion, int first_param, int second_param)
 {
-    champion->carry = !champion->carry;
+    champion->carry = false;
+    if (first_param + second_param == 0)
+        champion->carry = true;
     champion->program_counter += CODING_BYTE + 3 + 1;
     champion->program_counter %= MEM_SIZE;
 }
@@ -38,6 +40,6 @@ int execute_opcode_add(cpu_t *cpu, champions_t *champion)
     third_parameter = cpu->memory[current_counter];
     registers[third_parameter] =
         registers[first_parameter] + registers[second_parameter];
-    update_champion(champion);
+    update_champion(champion, first_parameter, second_parameter);
     return SUCCESS;
 }
