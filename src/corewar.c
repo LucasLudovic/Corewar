@@ -56,7 +56,7 @@ void initialize_memory(cpu_t *cpu)
 
 int execute_corewar(char const *const *argv)
 {
-    cpu_t cpu = { 0 };
+    cpu_t cpu = { { 0 }, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
     if (initialize_vm(&cpu, argv) == FAILURE) {
         destroy_champions(&cpu);
