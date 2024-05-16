@@ -35,5 +35,6 @@ int execute_opcode_live(cpu_t *cpu, champions_t *champion)
     my_putstr(") is alive.\n");
     champion->program_counter += 5;
     champion->program_counter %= MEM_SIZE;
+    cpu->winner = first_parameter;
     return SUCCESS;
 }

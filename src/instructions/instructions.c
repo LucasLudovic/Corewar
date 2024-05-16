@@ -50,7 +50,7 @@ int retrieve_instruction(cpu_t *cpu, champions_t *champion)
 {
     if (cpu == NULL || champion == NULL)
         return display_error("Unable to retrieve instructions\n");
-    champion->instructions = cpu->memory[champion->program_counter];
+    champion->instructions = cpu->memory[champion->program_counter % MEM_SIZE];
     retrieve_instruction_cycle(cpu, champion);
     return SUCCESS;
 }
