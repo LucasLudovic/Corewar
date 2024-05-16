@@ -36,5 +36,6 @@ int execute_opcode_live(cpu_t *cpu, champions_t *champion)
     champion->program_counter += 5;
     champion->program_counter %= MEM_SIZE;
     cpu->winner = first_parameter;
+    cpu->winner_name = champion->header->prog_name;
     return SUCCESS;
 }
