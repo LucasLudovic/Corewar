@@ -25,6 +25,7 @@ SRC	+=	src/opcodes/opcode_0x08.c
 SRC	+=	src/opcodes/opcode_0x09.c
 SRC	+=	src/opcodes/opcode_0x0a.c
 SRC	+=	src/opcodes/opcode_0x0b.c
+SRC	+=	src/opcodes/opcode_0x0c.c
 SRC	+=	src/opcodes/opcode_0x0d.c
 SRC	+=	src/opcodes/opcode_0x0e.c
 SRC	+=	src/virtualmachine/set_load_address_with_preload.c
@@ -39,13 +40,15 @@ CFLAGS	=	-W -Wall -Wextra -Wpedantic
 
 CPPFLAGS	=	-I include
 
-LDFLAGS	=	-L lib -lmy
+LDFLAGS	=	-L lib -lmy	-lmy_alloc
 
 all:	$(NAME)
 
 $(NAME):	$(OBJ)
 	@make -C lib/my
 	@make clean -C lib/my
+	@make -C lib/my_alloc
+	@make clean -C lib/my_alloc
 	$(CC) -o $(NAME) $(OBJ) $(CFLAGS) $(LDFLAGS) $(CPPFLAGS)
 
 clean:
@@ -53,6 +56,7 @@ clean:
 
 fclean:	clean
 	@make fclean -C lib/my
+	@make fclean -C lib/my_alloc
 	@make fclean -C tests/
 	@find .. -name *.gcno -delete
 	@find .. -name *.gcda -delete

@@ -11,6 +11,7 @@
 #include "my.h"
 #include "corewar.h"
 #include "my_macros.h"
+#include "op.h"
 #include "virtualmachine/set_load_address.h"
 #include "virtualmachine/initialize_vm.h"
 
@@ -19,7 +20,9 @@ void destroy_champions(cpu_t *cpu)
 {
     if (cpu == NULL)
         return;
-    for (size_t i = 0; i < NB_CHAMPIONS && cpu->champions[i] != NULL; i += 1) {
+    if (cpu->champions == NULL)
+        return;
+    for (size_t i = 0; cpu->champions[i] != NULL && i < cpu->init_champ; i += 1) {
         if (cpu->champions[i]->name != NULL)
             free(cpu->champions[i]->name);
         if (cpu->champions[i]->file_stream != NULL)
@@ -29,6 +32,8 @@ void destroy_champions(cpu_t *cpu)
         if (cpu->champions[i] != NULL)
             free(cpu->champions[i]);
     }
+    if (cpu->champions != NULL)
+        free(cpu->champions);
 }
 
 static
@@ -55,8 +60,14 @@ int execute_corewar(char const *const *argv)
     }
     if (retrieve_champions_instructions(&cpu) == FAILURE)
         return FAILURE;
+    for (size_t i = 0; i < MEM_SIZE; i += 1)
+        printf("%x ", cpu.memory[i]);
+    printf("\n\n");
     if (execute_arena(&cpu) == FAILURE)
         return FAILURE;
+    for (size_t i = 0; i < MEM_SIZE; i += 1)
+        printf("%x ", cpu.memory[i]);
+    printf("\n\n");
     display_winner(&cpu);
     destroy_champions(&cpu);
     return SUCCESS;
