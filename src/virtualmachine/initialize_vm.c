@@ -151,11 +151,12 @@ int initialize_vm(cpu_t *cpu, char const *const *argv)
         destroy_unused_champion(&cpu->champions[2]);
     if (champion_number <= 3)
         destroy_unused_champion(&cpu->champions[3]);
+    if (champion_number == 1)
+        return display_error("To few warrior\n");
     cpu->nb_champions = champion_number;
     cpu->init_champ = champion_number;
     cpu->champions = my_realloc(cpu->champions, (cpu->nb_champions + 1) *
         sizeof(champions_t *), (NB_CHAMPIONS + 1) * sizeof(champions_t *));
-    printf("first nb champ = %ld\n", cpu->nb_champions);
     cpu->champions[cpu->nb_champions] = NULL;
     return SUCCESS;
 }

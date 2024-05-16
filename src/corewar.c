@@ -25,8 +25,6 @@ void destroy_champions(cpu_t *cpu)
     for (size_t i = 0; cpu->champions[i] != NULL && i < cpu->init_champ; i += 1) {
         if (cpu->champions[i]->name != NULL)
             free(cpu->champions[i]->name);
-        if (cpu->champions[i]->file_stream != NULL)
-            fclose(cpu->champions[i]->file_stream);
         if (cpu->champions[i]->header != NULL)
             free(cpu->champions[i]->header);
         if (cpu->champions[i] != NULL)
