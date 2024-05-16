@@ -18,7 +18,7 @@ int execute_opcode_live(cpu_t *cpu, champions_t *champion)
 {
     int first_parameter = 0;
 
-    if (cpu == NULL || champion == NULL || champion->name == NULL)
+    if (cpu == NULL || champion == NULL)
         return display_error("Unable to retrieve structs in opcode live\n");
     cpu->winner = champion->player_number;
     first_parameter = cpu->memory[champion->program_counter + 1];

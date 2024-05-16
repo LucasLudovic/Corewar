@@ -10,6 +10,7 @@
 #include "my_macros.h"
 #include "my.h"
 #include "op.h"
+#include "my_alloc.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -63,7 +64,7 @@ int check_prog_number(champions_t *champions, char const *const *argv,
         return display_error("No argument after -n\n");
     if (my_str_isnum(argv[*i + 1]) == 0)
         return display_error("argument after -n must be a number\n");
-    champions->program_counter = my_getnbr(argv[*i + 1]);
+    champions->player_number = my_getnbr(argv[*i + 1]);
     *i += 2;
     return SUCCESS;
 }
@@ -95,7 +96,7 @@ static
 int initialize_champions(cpu_t *cpu)
 {
     cpu->dump = -1;
-    cpu->champions = malloc(sizeof(champions_t) * NB_CHAMPIONS + 1);
+    cpu->champions = malloc(sizeof(champions_t *) * (NB_CHAMPIONS + 1));
     for (size_t i = 0; i < NB_CHAMPIONS; i += 1) {
         cpu->champions[i] = malloc(sizeof(champions_t));
         if (cpu->champions[i] == NULL)
@@ -112,7 +113,7 @@ int initialize_champions(cpu_t *cpu)
         cpu->champions[i]->program_counter = 0;
         cpu->nb_champions += 1;
     }
-    cpu->champions[4] = NULL;
+    cpu->champions[NB_CHAMPIONS] = NULL;
     return SUCCESS;
 }
 
@@ -127,7 +128,7 @@ void destroy_unused_champion(champions_t **champions)
     }
     if ((*champions)->file_stream != NULL)
         fclose((*champions)->file_stream);
-    if (champions != NULL) {
+    if (*champions != NULL) {
         free(*champions);
         *champions = NULL;
     }
@@ -138,11 +139,9 @@ int initialize_vm(cpu_t *cpu, char const *const *argv)
     size_t champion_number = 0;
     size_t i = 1;
 
-    if (cpu == NULL)
+    if (cpu == NULL || argv == NULL)
         return FAILURE;
     if (initialize_champions(cpu) == FAILURE)
-        return FAILURE;
-    if (argv == NULL)
         return FAILURE;
     while (argv[i] != NULL)
         if (retrieve_champion(cpu, argv, &i, &champion_number) == FAILURE)
@@ -152,5 +151,11 @@ int initialize_vm(cpu_t *cpu, char const *const *argv)
         destroy_unused_champion(&cpu->champions[2]);
     if (champion_number <= 3)
         destroy_unused_champion(&cpu->champions[3]);
+    cpu->nb_champions = champion_number;
+    cpu->init_champ = champion_number;
+    cpu->champions = my_realloc(cpu->champions, (cpu->nb_champions + 1) *
+        sizeof(champions_t *), (NB_CHAMPIONS + 1) * sizeof(champions_t *));
+    printf("first nb champ = %ld\n", cpu->nb_champions);
+    cpu->champions[cpu->nb_champions] = NULL;
     return SUCCESS;
 }

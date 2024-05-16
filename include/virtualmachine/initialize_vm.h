@@ -21,6 +21,7 @@ typedef enum state {
 
 typedef struct cpu_s {
     uint8_t memory[MEM_SIZE];
+    size_t init_champ;
     size_t nb_champions;
     champions_t **champions;
     cpu_state_t state;
