@@ -68,7 +68,6 @@ jobs:
                 fi
                 exit 0
     push-mirror:
-        needs: run-tests
         runs-on: ubuntu-latest
         if: github.event_name == 'push'
         steps:
