@@ -35,6 +35,7 @@ void initialize_register(champions_t *champion)
 {
     for (size_t i = 0; i < REG_NUMBER; i += 1)
         champion->registers[i] = 0;
+    champion->has_lived = 0;
 }
 
 static
