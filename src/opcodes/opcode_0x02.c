@@ -14,19 +14,20 @@
 #include "my.h"
 
 static
-void check_second_param(champions_t *champion, size_t second_param)
+int check_second_param(champions_t *champion, size_t second_param)
 {
     if (second_param >= REG_NUMBER) {
         champion->alive = FALSE;
-        return;
+        return FAILURE;
     }
+    return SUCCESS;
 }
 
 static
 void check_first_param(champions_t *champion, size_t first_param,
     size_t second_param)
 {
-    if (first_param >= REG_NUMBER) {
+    if (first_param >= REG_NUMBER || second_param >= REG_NUMBER) {
         champion->alive = FALSE;
         return;
         }
@@ -44,7 +45,8 @@ int update_register(cpu_t *cpu, champions_t *champion)
     bytes = retrieve_first_parameter(cpu, champion, &first_param, bytes);
     previons_bytes = bytes;
     bytes = retrieve_second_parameter(cpu, champion, &second_param, bytes);
-    check_second_param(champion, second_param);
+    if (check_second_param(champion, second_param) == FAILURE)
+        return SUCCESS;
     if (previons_bytes == 2)
         check_first_param(champion, first_param, second_param);
     if (previons_bytes != 2)
