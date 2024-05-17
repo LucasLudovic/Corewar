@@ -27,6 +27,7 @@ void add_new_champion(cpu_t *cpu, champions_t *champion, size_t parameter)
     new_champion->index = champion->index;
     new_champion->pre_load = champion->pre_load;
     new_champion->nbr_cycles = 0;
+    new_champion->nb_set = champion->nb_set;
     new_champion->has_lived = false;
     for (size_t i = 0; i < REG_NUMBER; i += 1)
         new_champion->registers[i] = champion->registers[i];
