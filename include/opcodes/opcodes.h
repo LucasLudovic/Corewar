@@ -31,5 +31,7 @@ int execute_opcode_sti(cpu_t *cpu, champions_t *champion);
 int execute_opcode_fork(cpu_t *cpu, champions_t *champion);
 int execute_opcode_lld(cpu_t *cpu, champions_t *champion);
 int execute_opcode_lldi(cpu_t *cpu, champions_t *champion);
+int execute_opcode_lfork(cpu_t *cpu, champions_t *champion);
+int execute_opcode_aff(cpu_t *cpu, champions_t *champion);
 
 #endif

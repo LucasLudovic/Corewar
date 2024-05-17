@@ -122,6 +122,7 @@ int execute_arena(cpu_t *cpu)
         if (cpu->cycle_max <= 0)
             cpu->state = CPU_HALTED;
         cpu->nb_cycle += 1;
+        // printf("cpu = %d\n", cpu->nb_cycle);
     }
     return SUCCESS;
 }

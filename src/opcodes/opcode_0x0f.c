@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2024
 ** corewar
 ** File description:
-** opcode_0x0c
+** opcode_0x0f.c
 */
 
 #include <stdlib.h>
@@ -30,8 +30,8 @@ void add_new_champion(cpu_t *cpu, champions_t *champion, size_t parameter)
     for (size_t i = 0; i < REG_NUMBER; i += 1)
         new_champion->registers[i] = champion->registers[i];
     new_champion->player_number = champion->player_number;
-    new_champion->load_address = ((champion->program_counter + parameter)
-        % IDX_MOD) % MEM_SIZE;
+    new_champion->load_address = (champion->program_counter + parameter)
+        % MEM_SIZE;
     new_champion->program_counter = new_champion->load_address;
     retrieve_instruction(cpu, new_champion);
 }
@@ -44,7 +44,7 @@ void fork_champion(cpu_t *cpu, champions_t *champion)
     parameter <<= 8;
     parameter += cpu->memory[(champion->program_counter + 2) % MEM_SIZE];
     for (int i = 0; i < champion->header->prog_size; i += 1)
-        cpu->memory[(champion->program_counter + (parameter + i) % IDX_MOD) %
+        cpu->memory[(champion->program_counter + parameter + i) %
         MEM_SIZE] = cpu->memory[(champion->load_address + i) % MEM_SIZE];
     cpu->champions = my_realloc(cpu->champions, (cpu->nb_champions + 2) *
         sizeof(champions_t *), (cpu->nb_champions + 1) *
@@ -56,7 +56,7 @@ void fork_champion(cpu_t *cpu, champions_t *champion)
     champion->program_counter = (champion->program_counter + 3) % MEM_SIZE;
 }
 
-int execute_opcode_fork(cpu_t *cpu, champions_t *champion)
+int execute_opcode_lfork(cpu_t *cpu, champions_t *champion)
 {
     if (cpu == NULL || champion == NULL)
         return display_error("Unable to retrieve structs for fork\n");

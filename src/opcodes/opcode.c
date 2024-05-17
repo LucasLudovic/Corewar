@@ -24,8 +24,8 @@ int (*instruction_table[])(cpu_t *cpu, champions_t *champion) = {
     &execute_opcode_fork,
     &execute_opcode_lld,
     &execute_opcode_lldi,
-    NULL,
-    NULL
+    &execute_opcode_lfork,
+    &execute_opcode_aff
 };
 
 static
