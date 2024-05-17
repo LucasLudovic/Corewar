@@ -31,6 +31,13 @@ int check_load_address(champions_t *champion, char const *const *argv,
 }
 
 static
+void initialize_register(champions_t *champion)
+{
+    for (size_t i = 0; i < REG_NUMBER; i += 1)
+        champion->registers[i] = 0;
+}
+
+static
 int check_champions(champions_t *champion, char const *const *argv,
     size_t *i, size_t *champion_number)
 {
@@ -46,9 +53,9 @@ int check_champions(champions_t *champion, char const *const *argv,
         return display_error("champion must be .cor file\n");
     if (argv[*i][len - 4] != '.')
         return display_error("champion must be .cor file\n");
-    champion->name = my_strdup(argv[*i]);
     champion->file_stream = fopen(argv[*i], "rb");
     champion->alive = TRUE;
+    initialize_register(champion);
     if (champion->file_stream == NULL)
         return display_error("Can't open file\n");
     *i += 1;
@@ -102,7 +109,6 @@ int initialize_champions(cpu_t *cpu)
         if (cpu->champions[i] == NULL)
             return display_error("Unable to alloc memory to champion");
         cpu->champions[i]->header = NULL;
-        cpu->champions[i]->name = NULL;
         cpu->champions[i]->file_stream = NULL;
         cpu->champions[i]->carry = 0;
         cpu->champions[i]->nbr_cycles = 0;
@@ -122,10 +128,6 @@ void destroy_unused_champion(champions_t **champions)
 {
     if (*champions == NULL)
         return;
-    if ((*champions)->name != NULL) {
-        free((*champions)->name);
-        (*champions)->name = NULL;
-    }
     if ((*champions)->file_stream != NULL)
         fclose((*champions)->file_stream);
     if (*champions != NULL) {

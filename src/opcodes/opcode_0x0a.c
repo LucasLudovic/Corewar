@@ -68,7 +68,6 @@ void update_register(cpu_t *cpu, champions_t *champion,
     champion->registers[third_param] <<= 8;
     champion->registers[third_param] += cpu->memory[
         (champion->program_counter + (sum % IDX_MOD)) % MEM_SIZE];
-    champion->registers[third_param] <<= 8;
 }
 
 int execute_opcode_ldi(cpu_t *cpu, champions_t *champion)
@@ -77,7 +76,7 @@ int execute_opcode_ldi(cpu_t *cpu, champions_t *champion)
     size_t sum = 0;
     int bytes = 1;
 
-    if (cpu == NULL || champion == NULL || champion->name == NULL)
+    if (cpu == NULL || champion == NULL)
         return display_error("Unable to retrieve structs in opcode ldi\n");
     champion->index = true;
     sum = retrieve_sum(cpu, champion, &bytes, sum);

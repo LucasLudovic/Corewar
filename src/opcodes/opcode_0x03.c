@@ -18,8 +18,8 @@ void assign_indirect(cpu_t *cpu, champions_t *champion,
 {
     *second_param = *second_param << 2;
     *second_param += cpu->memory[(champion->program_counter + 4) % MEM_SIZE];
-    cpu->memory[(champion->program_counter + *second_param) % IDX_MOD] =
-        champion->registers[*first_param];
+    cpu->memory[(champion->program_counter + *second_param % IDX_MOD)
+        % MEM_SIZE] = champion->registers[*first_param];
 }
 
 static
