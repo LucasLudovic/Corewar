@@ -73,6 +73,7 @@ int check_prog_number(champions_t *champions, char const *const *argv,
     if (my_str_isnum(argv[*i + 1]) == 0)
         return display_error("argument after -n must be a number\n");
     champions->player_number = my_getnbr(argv[*i + 1]);
+    champions->nb_set = true;
     *i += 2;
     return SUCCESS;
 }
@@ -116,6 +117,7 @@ int initialize_champions(cpu_t *cpu)
         cpu->champions[i]->player_number = 0;
         cpu->champions[i]->pre_load = FALSE;
         cpu->champions[i]->load_address = 0;
+        cpu->champions[i]->nb_set = false;
         cpu->champions[i]->program_counter = 0;
         cpu->nb_champions += 1;
     }
