@@ -119,7 +119,7 @@ void kill_champion(cpu_t *cpu)
 {
     for (size_t i = 0; cpu->champions[i] != NULL; i += 1) {
         if (cpu->champions[i]->has_lived == false)
-            cpu->champions[i]->alive = true;
+            cpu->champions[i]->alive = false;
     }
 }
 
