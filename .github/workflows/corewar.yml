@@ -67,18 +67,6 @@ jobs:
                     exit 1
                 fi
                 exit 0
-    run-tests:
-        runs-on: ubuntu-latest
-        container: epitechcontent/epitest-docker:latest
-        needs: [check-compilation, check-coding-style]
-        steps:
-            - name: Checkout GH repo
-              uses: actions/checkout@master
-            - name: Compile tests binaries
-              run: make tests_run
-            - name: Run tests
-              run: ./unit_tests
-              timeout-minutes: 2
     push-mirror:
         needs: run-tests
         runs-on: ubuntu-latest
