@@ -22,6 +22,10 @@ int update_sum_first(cpu_t *cpu, champions_t *champion, int *bytes,
     *bytes = retrieve_first_parameter(cpu, champion, &first_param, *bytes);
     if (*bytes == 2) {
         *first_register = true;
+        if (first_param >= REG_NUMBER) {
+            champion->alive = false;
+            return FAILURE;
+        }
         sum = cpu->memory[(champion->program_counter +
             (champion->registers[first_param] % IDX_MOD)) % MEM_SIZE];
         sum <<= 8;
@@ -46,8 +50,13 @@ int retrieve_sum(cpu_t *cpu, champions_t *champion, int *bytes, size_t sum)
     sum = update_sum_first(cpu, champion, bytes, &first_register);
     *bytes = retrieve_second_parameter(cpu, champion, &second_param, *bytes);
     if ((first_register == true && *bytes == 3) ||
-        (first_register == false && *bytes == 4))
+        (first_register == false && *bytes == 4)) {
+        if (second_param >= REG_NUMBER) {
+            champion->alive = false;
+            return FAILURE;
+        }
         sum += champion->registers[second_param];
+    }
     else
         sum += second_param;
     return sum;
@@ -81,6 +90,10 @@ int execute_opcode_ldi(cpu_t *cpu, champions_t *champion)
     champion->index = true;
     sum = retrieve_sum(cpu, champion, &bytes, sum);
     bytes = retrieve_third_parameter(cpu, champion, &third_param, bytes);
+    if (third_param >= REG_NUMBER) {
+        champion->alive = false;
+        return FAILURE;
+    }
     update_register(cpu, champion, third_param, sum);
     champion->program_counter = (champion->program_counter + bytes + 1)
         % MEM_SIZE;
