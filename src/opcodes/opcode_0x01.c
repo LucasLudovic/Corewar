@@ -28,6 +28,8 @@ int execute_opcode_live(cpu_t *cpu, champions_t *champion)
     first_parameter += cpu->memory[(champion->program_counter + 3) % MEM_SIZE];
     first_parameter <<= 8;
     first_parameter += cpu->memory[(champion->program_counter + 4) % MEM_SIZE];
+    cpu->nbr_live += 1;
+    champion->has_lived = true;
     my_putstr("The player ");
     my_put_nbr(champion->player_number);
     my_putchar('(');

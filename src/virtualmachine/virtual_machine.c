@@ -30,8 +30,9 @@ static
 void execute_champions(cpu_t *cpu)
 {
     for (size_t i = 0; cpu->champions[i] != NULL; i += 1) {
-        if (cpu->champions[i]->alive == TRUE &&
-            execute_single_champion(cpu, cpu->champions[i]) == FAILURE)
+        if (cpu->champions[i]->alive == false)
+            continue;
+        if (execute_single_champion(cpu, cpu->champions[i]) == FAILURE)
             cpu->champions[i]->alive = FALSE;
     }
 }
@@ -105,6 +106,23 @@ int check_premature_end(cpu_t *cpu)
     return FAILURE;
 }
 
+static
+void set_champion_live(cpu_t *cpu)
+{
+    for (size_t i = 0; cpu->champions[i] != NULL; i += 1) {
+        cpu->champions[i]->has_lived = false;
+    }
+}
+
+static
+void kill_champion(cpu_t *cpu)
+{
+    for (size_t i = 0; cpu->champions[i] != NULL; i += 1) {
+        if (cpu->champions[i]->has_lived == false)
+            cpu->champions[i]->alive = true;
+    }
+}
+
 int execute_arena(cpu_t *cpu)
 {
     cpu->cycle_max = CYCLE_TO_DIE;
@@ -115,13 +133,18 @@ int execute_arena(cpu_t *cpu)
         if (check_premature_end(cpu) == SUCCESS)
             break;
         execute_champions(cpu);
-        if (cpu->nb_cycle >= cpu->cycle_max) {
+        cpu->nb_cycle += 1;
+        if (cpu->nbr_live == 40) {
+            cpu->nbr_live = 0;
             cpu->cycle_max -= CYCLE_DELTA;
+        }
+        if (cpu->nb_cycle >= cpu->cycle_max) {
+            kill_champion(cpu);
+            set_champion_live(cpu);
             cpu->nb_cycle = 0;
         }
-        if (cpu->cycle_max <= 0)
+        if (cpu->cycle_max <= 1)
             cpu->state = CPU_HALTED;
-        cpu->nb_cycle += 1;
         // printf("cpu = %d\n", cpu->nb_cycle);
     }
     return SUCCESS;

@@ -29,6 +29,7 @@ typedef struct cpu_s {
     int dump;
     int cycle_max;
     int winner;
+    size_t nbr_live;
     char *winner_name;
 } cpu_t;
 
