@@ -17,6 +17,26 @@
 #include "my_macros.h"
 
 static
+void check_second_param(champions_t *champion, size_t second_param)
+{
+    if (second_param >= REG_NUMBER) {
+        champion->alive = FALSE;
+        return;
+    }
+}
+
+static
+void check_first_param(champions_t *champion, size_t first_param,
+    size_t second_param)
+{
+    if (first_param >= REG_NUMBER) {
+        champion->alive = FALSE;
+        return;
+        }
+    champion->registers[second_param] = champion->registers[first_param];
+}
+
+static
 int update_register(cpu_t *cpu, champions_t *champion)
 {
     size_t first_param = 0;
@@ -27,9 +47,10 @@ int update_register(cpu_t *cpu, champions_t *champion)
     bytes = retrieve_first_parameter(cpu, champion, &first_param, bytes);
     previons_bytes = bytes;
     bytes = retrieve_second_parameter(cpu, champion, &second_param, bytes);
+    check_second_param(champion, second_param);
     if (previons_bytes == 2)
-        champion->registers[second_param] = champion->registers[first_param];
-    else
+        check_first_param(champion, first_param, second_param);
+    if (previons_bytes != 2)
         champion->registers[second_param] =
             cpu->memory[champion->program_counter + first_param];
     champion->program_counter = (champion->program_counter + (bytes + 1))
@@ -42,8 +63,9 @@ int update_register(cpu_t *cpu, champions_t *champion)
 int execute_opcode_lld(cpu_t *cpu, champions_t *champion)
 {
     if (cpu == NULL || champion == NULL)
-        return display_error("Unable to retrieve structs for ld\n");
+        return display_error("Unable to retrieve structs for lld\n");
     champion->index = false;
+    champion->carry = false;
     update_register(cpu, champion);
     return SUCCESS;
 }

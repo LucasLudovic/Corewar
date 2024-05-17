@@ -18,8 +18,22 @@ void assign_indirect(cpu_t *cpu, champions_t *champion,
 {
     *second_param = *second_param << 2;
     *second_param += cpu->memory[(champion->program_counter + 4) % MEM_SIZE];
+    if (*first_param >= REG_NUMBER) {
+        champion->alive = FALSE;
+        return;
+    }
     cpu->memory[(champion->program_counter + *second_param % IDX_MOD)
         % MEM_SIZE] = champion->registers[*first_param];
+}
+
+static
+int check_param(champions_t *champion, size_t first_param, size_t second_param)
+{
+    if (second_param >= REG_NUMBER || first_param >= REG_NUMBER) {
+        champion->alive = FALSE;
+        return FAILURE;
+    }
+    return SUCCESS;
 }
 
 static
@@ -35,6 +49,8 @@ void store_value(cpu_t *cpu, champions_t *champion, uint8_t coding_byte)
     second_param = cpu->memory[(champion->program_counter + 3) % MEM_SIZE];
     if (coding_byte == 0x01) {
         new_pc += 2;
+        if (check_param(champion, first_param, second_param) == FAILURE)
+            return;
         champion->registers[second_param] = champion->registers[first_param];
     }
     if (coding_byte == 0x03) {

@@ -30,6 +30,7 @@ SRC	+=	src/opcodes/opcode_0x0d.c
 SRC	+=	src/opcodes/opcode_0x0e.c
 SRC	+=	src/opcodes/opcode_0x0f.c
 SRC	+=	src/opcodes/opcode_0x10.c
+SRC	+=	src/virtualmachine/dump.c
 SRC	+=	src/virtualmachine/set_load_address_with_preload.c
 
 OBJ	=	$(SRC:.c=.o)

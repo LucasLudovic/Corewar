@@ -14,9 +14,18 @@
 static
 void first_param_register(champions_t *champion, size_t param[3], int bytes[3])
 {
-    if (bytes[1] == 2 && bytes[2] == 3)
+    if (param[0] >= REG_NUMBER) {
+        champion->alive = FALSE;
+        return;
+    }
+    if (bytes[1] == 2 && bytes[2] == 3) {
+        if (param[1] >= REG_NUMBER) {
+            champion->alive = FALSE;
+            return;
+        }
         champion->registers[param[2]] = champion->registers[param[0]] ^
             champion->registers[param[1]];
+    }
     if (bytes[1] == 2 && bytes[2] == 4)
         champion->registers[param[2]] = champion->registers[param[0]] ^
             param[1];
@@ -28,12 +37,22 @@ void first_param_register(champions_t *champion, size_t param[3], int bytes[3])
 static
 void first_param_indirect(champions_t *champion, size_t param[3], int bytes[3])
 {
-    if (bytes[1] == 3 && bytes[2] == 4)
+    if (bytes[1] == 3 && bytes[2] == 4) {
+        if (param[1] >= REG_NUMBER) {
+            champion->alive = FALSE;
+            return;
+        }
         champion->registers[param[2]] = param[0] ^
             champion->registers[param[1]];
-    if (bytes[1] == 3 && bytes[2] == 5)
+    }
+    if (bytes[1] == 3 && bytes[2] == 5) {
+        if (param[0] >= REG_NUMBER) {
+            champion->alive = FALSE;
+            return;
+        }
         champion->registers[param[2]] = champion->registers[param[0]] ^
             param[1];
+    }
     if (bytes[1] == 3 && bytes[2] == 7)
         champion->registers[param[2]] = param[0] ^ param[1];
 }
@@ -41,12 +60,22 @@ void first_param_indirect(champions_t *champion, size_t param[3], int bytes[3])
 static
 void first_param_direct(champions_t *champion, size_t param[3], int bytes[3])
 {
-    if (bytes[1] == 5 && bytes[2] == 6)
+    if (bytes[1] == 5 && bytes[2] == 6) {
+        if (param[1] >= REG_NUMBER) {
+            champion->alive = FALSE;
+            return;
+        }
         champion->registers[param[2]] = param[0] ^
             champion->registers[param[1]];
-    if (bytes[1] == 5 && bytes[2] == 7)
+    }
+    if (bytes[1] == 5 && bytes[2] == 7) {
+        if (param[0] >= REG_NUMBER) {
+            champion->alive = FALSE;
+            return;
+        }
         champion->registers[param[2]] = champion->registers[param[0]] ^
             param[1];
+    }
     if (bytes[1] == 5 && bytes[2] == 9)
         champion->registers[param[2]] = param[0] ^ param[1];
 }
@@ -54,6 +83,10 @@ void first_param_direct(champions_t *champion, size_t param[3], int bytes[3])
 static
 void make_operation(champions_t *champion, size_t param[3], int bytes[3])
 {
+    if (param[2] >= REG_NUMBER) {
+        champion->alive = FALSE;
+        return;
+    }
     first_param_register(champion, param, bytes);
     first_param_direct(champion, param, bytes);
     first_param_indirect(champion, param, bytes);
@@ -81,9 +114,8 @@ void retrieve_param(cpu_t *cpu, champions_t *champion)
 int execute_opcode_xor(cpu_t *cpu, champions_t *champion)
 {
     if (cpu == NULL || champion == NULL)
-        return display_error("Unable to retrieve structs for or\n");
+        return display_error("Unable to retrieve structs for xor\n");
     champion->index = false;
     retrieve_param(cpu, champion);
-    champion->carry = !champion->carry;
     return SUCCESS;
 }

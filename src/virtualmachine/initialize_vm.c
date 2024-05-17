@@ -107,7 +107,8 @@ int initialize_champions(cpu_t *cpu)
     cpu->champions = malloc(sizeof(champions_t *) * (NB_CHAMPIONS + 1));
     for (size_t i = 0; i < NB_CHAMPIONS; i += 1) {
         cpu->champions[i] = malloc(sizeof(champions_t));
-        if (cpu->champions[i] == NULL) return display_error("Unable to alloc memory to champion");
+        if (cpu->champions[i] == NULL)
+            return display_error("Unable to alloc memory to champion");
         cpu->champions[i]->header = NULL;
         cpu->champions[i]->file_stream = NULL;
         cpu->champions[i]->carry = 0;

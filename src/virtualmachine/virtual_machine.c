@@ -5,7 +5,7 @@
 ** Execute the virtual machine
 */
 
-#include <stdint.h>
+#include "virtualmachine/dump.h"
 #include "instructions/instructions.h"
 #include "champions/champions.h"
 #include "op.h"
@@ -44,30 +44,6 @@ void retrieve_champions_first_instructions(cpu_t *cpu)
         if (retrieve_instruction(cpu, cpu->champions[i]) == FAILURE)
             cpu->champions[i]->alive = FALSE;
     }
-}
-
-static
-void display_memory(cpu_t *cpu)
-{
-    for (size_t i = 0; i < MEM_SIZE; i += 1) {
-        my_print_hexa_maj(cpu->memory[i]);
-        if (i % 32 == 0 && i != 0)
-            my_putchar('\n');
-    }
-    my_putchar('\n');
-}
-
-static
-int dump_memory(cpu_t *cpu)
-{
-    if (cpu->dump != -1) {
-        if (cpu->dump == 0) {
-            display_memory(cpu);
-            return SUCCESS;
-        }
-        cpu->dump -= 1;
-    }
-    return FAILURE;
 }
 
 static
@@ -123,11 +99,23 @@ void kill_champion(cpu_t *cpu)
     }
 }
 
+static
+void stop_program(cpu_t *cpu)
+{
+    if (cpu->nb_cycle >= cpu->cycle_max) {
+        kill_champion(cpu);
+        set_champion_live(cpu);
+        cpu->nb_cycle = 0;
+    }
+    if (cpu->cycle_max <= 1)
+        cpu->state = CPU_HALTED;
+}
+
 int execute_arena(cpu_t *cpu)
 {
-    cpu->cycle_max = CYCLE_TO_DIE;
     if (cpu == NULL)
         return display_error("Unable to access cpu informations\n");
+    cpu->cycle_max = CYCLE_TO_DIE;
     retrieve_champions_first_instructions(cpu);
     while (cpu->state != CPU_HALTED) {
         if (check_premature_end(cpu) == SUCCESS)
@@ -138,13 +126,7 @@ int execute_arena(cpu_t *cpu)
             cpu->nbr_live = 0;
             cpu->cycle_max -= CYCLE_DELTA;
         }
-        if (cpu->nb_cycle >= cpu->cycle_max) {
-            kill_champion(cpu);
-            set_champion_live(cpu);
-            cpu->nb_cycle = 0;
-        }
-        if (cpu->cycle_max <= 1)
-            cpu->state = CPU_HALTED;
+        stop_program(cpu);
     }
     return SUCCESS;
 }
