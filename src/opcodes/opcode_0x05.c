@@ -38,6 +38,10 @@ int execute_opcode_sub(cpu_t *cpu, champions_t *champion)
     second_parameter = cpu->memory[current_counter];
     current_counter = (current_counter + 1) % MEM_SIZE;
     third_parameter = cpu->memory[current_counter];
+    if (first_parameter >= REG_SIZE || second_parameter >= REG_SIZE || third_parameter >= REG_SIZE) {
+        champion->alive = FALSE;
+        return SUCCESS;
+    }
     registers[third_parameter] =
         registers[first_parameter] - registers[second_parameter];
     update_champion(champion, first_parameter, second_parameter);

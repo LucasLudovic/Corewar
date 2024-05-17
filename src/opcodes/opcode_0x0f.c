@@ -58,6 +58,7 @@ void fork_champion(cpu_t *cpu, champions_t *champion)
 
 int execute_opcode_lfork(cpu_t *cpu, champions_t *champion)
 {
+    printf("lfork\n");
     if (cpu == NULL || champion == NULL)
         return display_error("Unable to retrieve structs for fork\n");
     fork_champion(cpu, champion);

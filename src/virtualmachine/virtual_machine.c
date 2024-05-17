@@ -134,7 +134,7 @@ int execute_arena(cpu_t *cpu)
             break;
         execute_champions(cpu);
         cpu->nb_cycle += 1;
-        if (cpu->nbr_live == 40) {
+        if (cpu->nbr_live >= 40) {
             cpu->nbr_live = 0;
             cpu->cycle_max -= CYCLE_DELTA;
         }
@@ -145,7 +145,6 @@ int execute_arena(cpu_t *cpu)
         }
         if (cpu->cycle_max <= 1)
             cpu->state = CPU_HALTED;
-        // printf("cpu = %d\n", cpu->nb_cycle);
     }
     return SUCCESS;
 }
