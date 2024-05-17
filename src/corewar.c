@@ -16,12 +16,25 @@
 #include "virtualmachine/initialize_vm.h"
 
 static
+void destroy_file_stream(cpu_t *cpu)
+{
+    if (cpu->champions == NULL)
+        return;
+    for (size_t i = 0; cpu->champions[i] != NULL &&
+        i < cpu->init_champ; i += 1) {
+        if (cpu->champions[i]->file_stream != NULL)
+            fclose(cpu->champions[i]->file_stream);
+    }
+}
+
+static
 void destroy_champions(cpu_t *cpu)
 {
     if (cpu == NULL)
         return;
     if (cpu->champions == NULL)
         return;
+    destroy_file_stream(cpu);
     for (size_t i = 0; cpu->champions[i] != NULL && i < cpu->init_champ;
         i += 1) {
         if (cpu->champions[i]->name != NULL)
