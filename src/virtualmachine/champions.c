@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <endian.h>
+#include "instructions/instructions.h"
 #include "virtualmachine/initialize_vm.h"
 #include "my_macros.h"
 #include "champions/champions.h"

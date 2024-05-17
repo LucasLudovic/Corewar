@@ -69,6 +69,42 @@ int dump_memory(cpu_t *cpu)
     return FAILURE;
 }
 
+static
+int is_last_champion_winner(cpu_t *cpu)
+{
+    for (size_t i = 0; cpu->champions[i] != NULL; i += 1) {
+        if (cpu->champions[i]->alive == true &&
+            my_strcmp(cpu->winner_name, cpu->champions[i]->header->prog_name)
+            == 0)
+            return true;
+    }
+    return false;
+}
+
+static
+int get_alive_champions(cpu_t *cpu)
+{
+    int champion_alive = 0;
+
+    for (size_t i = 0; cpu->champions[i] != NULL; i += 1) {
+        if (cpu->champions[i]->alive == true)
+            champion_alive += 1;
+    }
+    return champion_alive;
+}
+
+static
+int check_premature_end(cpu_t *cpu)
+{
+    if (get_alive_champions(cpu) == 0)
+        return SUCCESS;
+    if (get_alive_champions(cpu) == 1 && is_last_champion_winner(cpu) == true)
+        return SUCCESS;
+    if (dump_memory(cpu) == SUCCESS)
+        return SUCCESS;
+    return FAILURE;
+}
+
 int execute_arena(cpu_t *cpu)
 {
     cpu->cycle_max = CYCLE_TO_DIE;
@@ -76,7 +112,7 @@ int execute_arena(cpu_t *cpu)
         return display_error("Unable to access cpu informations\n");
     retrieve_champions_first_instructions(cpu);
     while (cpu->state != CPU_HALTED) {
-        if (dump_memory(cpu) == SUCCESS)
+        if (check_premature_end(cpu) == SUCCESS)
             break;
         execute_champions(cpu);
         cpu->nb_cycle += 1;

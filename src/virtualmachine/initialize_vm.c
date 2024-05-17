@@ -105,7 +105,6 @@ int initialize_champions(cpu_t *cpu)
         cpu->champions[i]->name = NULL;
         cpu->champions[i]->file_stream = NULL;
         cpu->champions[i]->carry = 0;
-        cpu->champions[i]->borrow = 0;
         cpu->champions[i]->nbr_cycles = 0;
         cpu->champions[i]->player_number = 0;
         cpu->champions[i]->pre_load = FALSE;
@@ -113,6 +112,7 @@ int initialize_champions(cpu_t *cpu)
         cpu->champions[i]->program_counter = 0;
         cpu->nb_champions += 1;
     }
+    cpu->winner = -1;
     cpu->champions[NB_CHAMPIONS] = NULL;
     return SUCCESS;
 }
@@ -134,6 +134,15 @@ void destroy_unused_champion(champions_t **champions)
     }
 }
 
+static
+void destroy_all_unused(size_t champion_number, cpu_t *cpu)
+{
+    if (champion_number <= 2)
+        destroy_unused_champion(&cpu->champions[2]);
+    if (champion_number <= 3)
+        destroy_unused_champion(&cpu->champions[3]);
+}
+
 int initialize_vm(cpu_t *cpu, char const *const *argv)
 {
     size_t champion_number = 0;
@@ -146,11 +155,7 @@ int initialize_vm(cpu_t *cpu, char const *const *argv)
     while (argv[i] != NULL)
         if (retrieve_champion(cpu, argv, &i, &champion_number) == FAILURE)
             return FAILURE;
-    cpu->winner = -1;
-    if (champion_number <= 2)
-        destroy_unused_champion(&cpu->champions[2]);
-    if (champion_number <= 3)
-        destroy_unused_champion(&cpu->champions[3]);
+    destroy_all_unused(champion_number, cpu);
     if (champion_number == 1)
         return display_error("To few warrior\n");
     cpu->nb_champions = champion_number;

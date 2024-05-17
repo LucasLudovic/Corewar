@@ -74,7 +74,7 @@ void retrieve_param(cpu_t *cpu, champions_t *champion)
     champion->program_counter = (champion->program_counter + (bytes[0] + 1))
         % MEM_SIZE;
     champion->carry = false;
-    if (champion->registers[param[3]] == 0)
+    if (champion->registers[param[2]] == 0)
         champion->carry = true;
 }
 
