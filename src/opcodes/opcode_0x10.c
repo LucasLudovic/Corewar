@@ -24,6 +24,7 @@ int execute_opcode_aff(cpu_t *cpu, champions_t *champion)
         return SUCCESS;
     }
     my_putchar(champion->registers[first_parameter] % 256);
+    my_putchar('\n');
     champion->program_counter += byte_read + 1;
     champion->program_counter %= MEM_SIZE;
     return SUCCESS;
