@@ -115,13 +115,13 @@ int execute_arena(cpu_t *cpu)
         if (check_premature_end(cpu) == SUCCESS)
             break;
         execute_champions(cpu);
-        cpu->nb_cycle += 1;
         if (cpu->nb_cycle >= cpu->cycle_max) {
             cpu->cycle_max -= CYCLE_DELTA;
             cpu->nb_cycle = 0;
         }
         if (cpu->cycle_max <= 0)
             cpu->state = CPU_HALTED;
+        cpu->nb_cycle += 1;
     }
     return SUCCESS;
 }
