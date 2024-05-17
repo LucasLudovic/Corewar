@@ -13,6 +13,17 @@
 #include "my.h"
 
 static
+void execute_no_register(cpu_t *cpu, champions_t *champion,
+    size_t *sum, int first_param)
+{
+    *sum = cpu->memory[(champion->program_counter +
+        (first_param)) % MEM_SIZE];
+    *sum <<= 8;
+    *sum += cpu->memory[(champion->program_counter +
+        (first_param) + 1) % MEM_SIZE];
+}
+
+static
 int update_sum_first(cpu_t *cpu, champions_t *champion, int *bytes,
     bool *first_register)
 {
@@ -32,11 +43,7 @@ int update_sum_first(cpu_t *cpu, champions_t *champion, int *bytes,
         sum += cpu->memory[(champion->program_counter +
             (champion->registers[first_param]) + 1) % MEM_SIZE];
     } else {
-        sum = cpu->memory[(champion->program_counter +
-            (first_param)) % MEM_SIZE];
-        sum <<= 8;
-        sum += cpu->memory[(champion->program_counter +
-            (first_param) + 1) % MEM_SIZE];
+        execute_no_register(cpu, champion, &sum, first_param);
     }
     return sum;
 }
@@ -56,8 +63,7 @@ int retrieve_sum(cpu_t *cpu, champions_t *champion, int *bytes, size_t sum)
             return FAILURE;
         }
         sum += champion->registers[second_param];
-    }
-    else
+    } else
         sum += second_param;
     return sum;
 }
