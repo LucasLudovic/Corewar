@@ -61,8 +61,6 @@ fclean:	clean
 	@make fclean -C lib/my
 	@make fclean -C lib/my_alloc
 	@make fclean -C tests/
-	@find .. -name *.gcno -delete
-	@find .. -name *.gcda -delete
 	@rm -f $(NAME)
 
 re: fclean all
